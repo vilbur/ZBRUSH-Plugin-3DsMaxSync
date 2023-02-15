@@ -10,6 +10,7 @@
 	[FileNameSetNext,"C:/Windows/Temp/_ZBRUSH_MAX_SYNC/load-exported-obj.txt"]
 	[IPress,ZScript:Load]
 
+	[Note,"Edit Tool Loaded TEST",,1]
 ,,	128,	CTRL+SHIFT+ALT+'Q',	/*Icon*/,	128
 ]
 
@@ -28,7 +29,7 @@
 	[VarSet, $export_file, [StrMerge, $export_dir, "/", [IGetTitle,Tool:ItemInfo] ] ]
 
 
-	[VarSet, folder_path, [FileNameResolvePath, $export_dir]]
+	[VarSet, folder_path, $export_dir]
 
 	[VarSet,folderExists,[FileExecute,  $ZFILE_UTILS_DLL,"FolderExists",#folder_path]]
 

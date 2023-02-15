@@ -12,7 +12,7 @@ icon:	"Across:2|width:196|height:48"
 --icon:	"Groupbox:Nodes"
 --icon:	"control:checkbutton"
 (
-	(MaxToZbrushSync_v()).exportObj()
+	(MaxToZbrushSync_v()).exportObjToZbrush()
 )
 
 /**
@@ -27,5 +27,5 @@ toolTip:	""
 --icon:	"control:checkbutton"
 (
 	--messageBox "_3DsMaxSync_to_max" title:"Title"  beep:false
-	(MaxToZbrushSync_v()).importObj()
+	(MaxToZbrushSync_v()).importObjToMax()
 )

@@ -17,13 +17,13 @@ $content .= "`n	[CanvasStroke,(ZObjStrokeV02n122=H43DV407YH43DV407K1XH43Dv40680H
 $content .= "`n	[IPress,Transform: Edit]"
 $content .= "`n	[IPress,Transform:Fit]"
 $content .= "`n	"
-$content .= "`n	[Note,""Edit Tool Loaded"",,1]"
+;$content .= "`n	[Note,""Edit Tool Loaded"",,1]"
 
 $content .= "`n]"
 
 FileAppend, %$content%, %$load_tool_zscript%
 
-sleep 500
+;sleep 500
 
 ;MsgBox,262144,load_tool_zscript, %$load_tool_zscript%,3
 
