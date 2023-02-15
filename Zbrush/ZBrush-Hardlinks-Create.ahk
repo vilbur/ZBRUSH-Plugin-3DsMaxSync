@@ -13,7 +13,7 @@
   *	Path will be replace by paths
   *
   */
-global $source_paths := [	"import-obj-to-viewport.zsc" ]
+global $source_paths := [	"MaxZbrushSync.zsc" ]
 
 global $zbrush_plugins_path	:= "C:/Program Files/Pixologic/ZBrush 2022/ZStartup/ZPlugs64"
 

@@ -1,0 +1,49 @@
+
+
+[IPalette, "~VIL-PLUGINS"]
+[ISubPalette, "~VIL-PLUGINS:MaxZbrushSync"]
+
+
+//[IButton, "importObj","importObj",
+[IButton, "~VIL-PLUGINS:MaxZbrushSync:Max to Zbrush","MaxToZbrush",
+
+	[FileNameSetNext,"C:\GoogleDrive\ProgramsData\CG\ZBrush\Plugins\MaxZbrushSync\Lib\load-exported-obj.txt"]
+	[IPress,ZScript:Load]
+
+,,	128,	CTRL+SHIFT+ALT+'Q',	/*Icon*/,	128
+]
+
+
+
+[IButton, "Export To Max","ZbrushToMax",
+//[IButton, "~VIL-PLUGINS:MaxZbrushSync:Zbrush to Max","Zbrush",
+
+	//[FileNameSetNext,"C:\Windows\Temp\_ZBRUSH_MAX_SYNC\temp.obj"]
+
+	[VarSet, $ZFILE_UTILS_DLL, "Lib\ZFileUtils64.dll"]
+
+	[VarSet, $export_dir, "C:/Windows/Temp/_ZBRUSH_MAX_SYNC" ]
+
+
+	[VarSet, $export_file, [StrMerge, $export_dir, "/", [IGetTitle,Tool:ItemInfo] ] ]
+
+
+	[VarSet, folder_path, [FileNameResolvePath, $export_dir]]
+
+	[VarSet,folderExists,[FileExecute,  $ZFILE_UTILS_DLL,"FolderExists",#folder_path]]
+
+	[If,folderExists
+	, // folder exists
+		[VarSet, err, [FileExecute, $ZFILE_UTILS_DLL, "EmptyFolder", #folder_path]]	// delete files in the folder
+	, // ELSE
+		[VarSet, err, [FileExecute, $ZFILE_UTILS_DLL, "MakeFolder", #folder_path]]	// create the folder
+	]
+
+	[FileNameSetNext, [StrMerge, $export_file, "obj"]]
+
+	[IPress,Tool:Export]
+
+	[VarSet, import_to_max_ahk, [FileNameResolvePath,  "Lib\importToMax.ahk"]]
+	[VarSet, err, [FileExecute, $ZFILE_UTILS_DLL, "LaunchAppWithFile",  #import_to_max_ahk]] // execute file
+
+]/*End of ZScript*/
