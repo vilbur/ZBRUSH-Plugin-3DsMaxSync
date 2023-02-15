@@ -3,7 +3,7 @@
 
 $imported_file	= %1%
 
-$load_tool_zscript :=  A_LineFile "/../load-exported-obj.txt"
+$load_tool_zscript :=  "C:/Windows/Temp/_ZBRUSH_MAX_SYNC/load-exported-obj.txt"
 
 FileDelete, %$load_tool_zscript%
 

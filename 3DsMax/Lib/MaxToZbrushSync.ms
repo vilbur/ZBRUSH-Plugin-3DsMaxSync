@@ -11,10 +11,13 @@ struct MaxToZbrushSync_v
 	/* properties */
 	export_dir	= "c:/Windows/Temp/_ZBRUSH_MAX_SYNC",
 
-	ahk_path = "c:/GoogleDrive/ProgramsData/CG/ZBrush/Plugins/MaxZbrushSync/Lib/importToZbrush.ahk",
 
-	preset_export_file	= getFilenamePath(getSourceFileName()) + "\Presets\obj_exporter_settings.ini",
-	preset_import_file	= getFilenamePath(getSourceFileName()) + "\Presets\obj_importer_settings.ini",
+	current_path = getFilenamePath(getSourceFileName()),
+
+	preset_export_file	= current_path + "/Presets/obj_exporter_settings.ini",
+	preset_import_file	= current_path + "/Presets/obj_importer_settings.ini",
+
+	ahk_path = current_path + "/importToZbrush.ahk",
 
 	preset_export = exporterPlugin.classes[findItem exporterPlugin.classes ObjExp].getIniName(),
 	preset_import = importerPlugin.classes[findItem importerPlugin.classes ObjImp].getIniName(),
@@ -28,6 +31,7 @@ struct MaxToZbrushSync_v
 	 */
 	function exportObj =
 	(
+		format "\n"; print "MaxToZbrushSync_v.exportObj()"
 		export_filename	= if maxFileName != "" then trimRight(maxFileName) ".max" else selection[1].name
 		export_path	= export_dir + "/" + export_filename + ".obj"
 
@@ -47,7 +51,7 @@ struct MaxToZbrushSync_v
 	 */
 	function importObj =
 	(
-		--format "\n"; print "MaxToZbrushSync_v.zbrushToMax()"
+		--format "\n"; print "MaxToZbrushSync_v.importObj()"
 		obj_files = getFiles (export_dir + "\\*.obj")
 
 		format "obj_files	= % \n" obj_files

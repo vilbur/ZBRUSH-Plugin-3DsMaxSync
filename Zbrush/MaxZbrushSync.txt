@@ -7,7 +7,7 @@
 //[IButton, "importObj","importObj",
 [IButton, "~VIL-PLUGINS:MaxZbrushSync:Max to Zbrush","MaxToZbrush",
 
-	[FileNameSetNext,"C:\GoogleDrive\ProgramsData\CG\ZBrush\Plugins\MaxZbrushSync\Lib\load-exported-obj.txt"]
+	[FileNameSetNext,"C:/Windows/Temp/_ZBRUSH_MAX_SYNC/load-exported-obj.txt"]
 	[IPress,ZScript:Load]
 
 ,,	128,	CTRL+SHIFT+ALT+'Q',	/*Icon*/,	128
@@ -20,7 +20,7 @@
 
 	//[FileNameSetNext,"C:\Windows\Temp\_ZBRUSH_MAX_SYNC\temp.obj"]
 
-	[VarSet, $ZFILE_UTILS_DLL, "Lib\ZFileUtils64.dll"]
+	[VarSet, $ZFILE_UTILS_DLL, "MaxZbrushSync\ZFileUtils64.dll"]
 
 	[VarSet, $export_dir, "C:/Windows/Temp/_ZBRUSH_MAX_SYNC" ]
 
@@ -43,7 +43,7 @@
 
 	[IPress,Tool:Export]
 
-	[VarSet, import_to_max_ahk, [FileNameResolvePath,  "Lib\importToMax.ahk"]]
+	[VarSet, import_to_max_ahk, [FileNameResolvePath,  "MaxZbrushSync\importToMax.ahk"]]
 	[VarSet, err, [FileExecute, $ZFILE_UTILS_DLL, "LaunchAppWithFile",  #import_to_max_ahk]] // execute file
 
 ]/*End of ZScript*/
