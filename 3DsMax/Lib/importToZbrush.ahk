@@ -12,8 +12,13 @@ writeImportScript()
 	$files_obj	:= []
 	$import_tools	:= ""
 	$append_subtools	:= ""
-	$header := "[If, 1,"
-	$footer .= "`n]"
+
+
+	$header	:= "[If, 1,"
+	$new_document	:= "[IKeyPress, 78,[IPress, Document:New Document]]"
+	$reset_tools	:= "[IKeyPress, ""1"",[IReset, 3]]"
+	;$footer .= "`n]"
+	$footer .= "`n`n[IShow,Tool]`n	[IClick, Tool:SubTool, 1]`n]" ; DEVELOPMENT
 
 
 	Loop, Files, %$export_dir%\*.obj
@@ -52,13 +57,15 @@ writeImportScript()
 
 	FileAppend, %$header%, %$import_zscript%
 
-	FileAppend, %$import_tools%, %$import_zscript%
 
-	FileAppend, %$load_first_tool%, %$import_zscript%
+	FileAppend, %$new_document%,	%$import_zscript%
+	FileAppend, %$reset_tools%,	%$import_zscript%
 
-	FileAppend, %$append_subtools%, %$import_zscript%
+	FileAppend, %$import_tools%,	%$import_zscript%
+	FileAppend, %$load_first_tool%,	%$import_zscript%
+	FileAppend, %$append_subtools%,	%$import_zscript%
 
-	FileAppend, %$footer%, %$import_zscript%
+	FileAppend, %$footer%,	%$import_zscript%
 }
 
 
@@ -66,7 +73,7 @@ writeImportScript()
  */
 executeCommandInZbrush()
 {
-	if( $zbrush_window := WinExist( "ahk_exe ZBrush.exe" ) )
+	if( $zbrush_window	:= WinExist( "ahk_exe ZBrush.exe" ) )
 	{
 		WinActivate, ahk_exe ZBrush.exe
 
