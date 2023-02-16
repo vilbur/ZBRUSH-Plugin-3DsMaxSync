@@ -41,7 +41,7 @@ struct MaxToZbrushSync_v
 
 		exportFile export_file_path #noPrompt selectedOnly:true using:ObjExp
 
-		DOSCommand ("Start \"\" \""+ahk_path+"\" \""+ export_file_path +"\"")
+		DOSCommand ("Start \"\" \""+ahk_path+"\"")
 	),
 
 	/** Zbrush to max
