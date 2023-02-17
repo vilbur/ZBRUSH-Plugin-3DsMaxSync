@@ -1,5 +1,4 @@
 
 <zscriptinsert, "MaxZbrushSync/exportFolder.txt">
 <zscriptinsert, "MaxZbrushSync/exportFromZbrush.txt">
-<zscriptinsert, "MaxZbrushSync/renameSubTools.txt">
 <zscriptinsert, "MaxZbrushSync/UI.txt">

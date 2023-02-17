@@ -13,7 +13,7 @@ writeImportScript()
 	$dates	:= $export_dir "/dates.txt"
 	$files_obj	:= []
 
-	FileDelete, %$test%
+	;FileDelete, %$test%
 	
 	/*
 		1) Get .obj and .mtl files
@@ -50,7 +50,7 @@ writeImportScript()
 		$tool_paths .= "`n	[VarSet, $tool_paths(" $index - 1 "),	""" $file_path """ ]"
 
 
-	$import_tools .= "`n`n	/* IMPORT TOOLS */"
+	$import_tools .= "`n`n	/*    IMPORT TOOLS    */"
 	$import_tools .= "`n	[Loop, " $tools_count ","
 	$import_tools .= "`n		[IPress,Tool:SimpleBrush]"
 	$import_tools .= "`n		[FileNameSetNext, $tool_paths(i) ]"
@@ -60,7 +60,7 @@ writeImportScript()
 	$import_tools .= "`n	, i]"
 
 
-	$load_first_tool .= "`n`n	/* LOAD FIRST TOOL */"
+	$load_first_tool .= "`n`n	/*    LOAD FIRST TOOL    */"
 	$load_first_tool .= "`n	[IPress, [StrMerge, ""Tool:"", $tool_names(0)] ]"
 	$load_first_tool .= "`n	[IPress, Stroke:DragRect]"
 	;$load_first_tool .= "`n	[CanvasStroke, (ZObjStrokeV02n2=H41EV434H41EV434)]"
@@ -71,17 +71,17 @@ writeImportScript()
 
 	if( $tools_count > 1 )
 	{
-		$append_subtools .= "`n`n	/* APPEND SUBTOOLS */"
+		$append_subtools .= "`n`n	/*    APPEND SUBTOOLS    */"
 		$append_subtools .= "`n	[Loop, " $tools_count - 1 ","
 		$append_subtools .= "`n		[IPress,	Tool:SubTool:Append]"
 		$append_subtools .= "`n		[IPress,	[StrMerge, ""PopUp:"", $tool_names(i + 1)]]"
 		$append_subtools .= "`n	, i]"
 	
 	
-		$rename_subtools .= "`n`n	/* RENAME SUBTOOLS */"
+		$rename_subtools .= "`n`n	/*    RENAME SUBTOOLS    */"
 		$rename_subtools .= "`n	[Loop, " $tools_count ","
 		$rename_subtools .= "`n		[SubToolSelect, 0]"
-		$rename_subtools .= "`n		[ToolSetPath,, $tool_names(i) ]"
+		$rename_subtools .= "`n		[ToolSetPath,, $subt_names(i) ]"
 		$rename_subtools .= "`n		[Loop, [SubToolGetCount] - 1,[IPress,Tool:SubTool:MoveDown] ]"
 		$rename_subtools .= "`n	, i]"
 		

@@ -16,7 +16,7 @@
 
 	[IPress,ZScript:Load]
 
-,,	128,	CTRL+SHIFT+ALT+'Q',	/*Icon*/,	128
+,,	128,	CTRL+SHIFT+ALT+'Q',	/*Icon*/,	64
 ]
 
 
@@ -27,5 +27,6 @@
 	//[RoutineCall, exportFolderCreate]
 
 	[RoutineCall, exportFromZbrush]
-
+	
+,,	128,,	/*Icon*/,	64
 ]/*End of ZScript*/

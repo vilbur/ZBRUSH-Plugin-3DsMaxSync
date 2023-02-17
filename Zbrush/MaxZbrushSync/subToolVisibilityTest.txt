@@ -1,0 +1,27 @@
+/** subToolVisibilityTest
+  *	
+  */
+[RoutineDef, subToolVisibilityTest,
+
+	[VarSet, is_visible,	0]
+	[VarSet, state, [SubToolGetStatus,id]]
+	[VarSet,	find,	[SubToolGetFolderIndex,id]]
+	
+	[If,(find > -1)
+	 ,//it's in a folder
+		[VarSet, state_folder,[SubToolGetStatus,find]]//get folder visibility
+		
+		[If,([Val, state_folder]&0x2 == 0x2)&&([Val, state]&0x1 == 0x1)
+		,
+			[VarSet, is_visible,1]
+		]
+	, //else no folder
+		[If,([Val, state]&0x1 == 0x1)
+		,
+			[VarSet,is_visible,1]
+		]
+	]
+
+// PARAMS
+,is_visible, id
+]
