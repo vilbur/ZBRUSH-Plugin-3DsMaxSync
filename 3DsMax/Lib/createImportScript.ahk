@@ -10,18 +10,34 @@ writeImportScript()
 {
 
 	$import_zscript	:= $export_dir "/importToolsToZbrush.txt"
+	$dates	:= $export_dir "/dates.txt"
 	$files_obj	:= []
 
-	Loop, Files, %$export_dir%\*.obj
-		$files_obj.push( RegExReplace( A_LoopFileFullPath, "\\", "/") )
+	FileDelete, %$test%
+	
+	/*
+		1) Get .obj and .mtl files
+		2) Remove counter prefix E.G.: "01-_-fooFile.obj" >>> "fooFile.obj"
+	*/ 
+	Loop, Files, %$export_dir%\*.*
+	{
+		if( A_LoopFileExt == "obj" ||  A_LoopFileExt == "mtl" )
+		{
+			$nosuffix_path :=  A_LoopFileDir "/" RegExReplace( A_LoopFileName, "\d+\-_\-", "") ;; 
+
+			FileMove, %A_LoopFileFullPath%, %$nosuffix_path%
+			
+			if( A_LoopFileExt == "obj" )
+				$files_obj.push( RegExReplace( $nosuffix_path, "\\", "/") )
+		}
+	}
 
 	$tools_count := $files_obj.length()
 
 	$header	:= "[If, 1,`n"
 	$new_document	:= "`n	[IKeyPress, 78,[IPress, Document:New Document]]"
 	$reset_tools	:= "`n	[IKeyPress, ""1"",[IReset, 3]]`n"
-	;$footer	.= "`n]"
-	$footer	.= "`n`n	[IShow,Tool]`n	[IClick, Tool:SubTool, 1]`n`n]" ; DEVELOPMENT
+	$footer	:= "`n]"
 
 
 	$vardef	:= "`n	[VarDef, $tool_paths("	$tools_count ") ]"
@@ -40,7 +56,7 @@ writeImportScript()
 	$import_tools .= "`n		[FileNameSetNext, $tool_paths(i) ]"
 	$import_tools .= "`n		[IPress, Tool:Import]"
 	$import_tools .= "`n		[VarSet, $tool_names(i),	[IGetTitle, Tool:Current Tool, 0]]"
-	$import_tools .= "`n		[VarSet, $subt_names(i),	[IGetTitle, Tool:Current Tool]]"
+	$import_tools .= "`n		[VarSet, $subt_names(i),	[IGetTitle, Tool:Current Tool  ]]"
 	$import_tools .= "`n	, i]"
 
 
@@ -53,19 +69,24 @@ writeImportScript()
 	$load_first_tool .= "`n	[IPress, Transform:Fit]"
 
 
-	$append_subtools .= "`n`n	/* APPEND SUBTOOLS */"
-	$append_subtools .= "`n	[Loop, " $tools_count - 1 ","
-	$append_subtools .= "`n		[IPress,	Tool:SubTool:Append]"
-	$append_subtools .= "`n		[IPress,	[StrMerge, ""PopUp:"", $tool_names(i + 1)]]"
-	$append_subtools .= "`n	, i]"
-
-
-	$rename_subtools .= "`n`n	/* RENAME SUBTOOLS */"
-	$rename_subtools .= "`n	[Loop, " $tools_count ","
-	$rename_subtools .= "`n		[SubToolSelect, 0]"
-	$rename_subtools .= "`n		[ToolSetPath,, $tool_names(i) ]"
-	$rename_subtools .= "`n		[Loop, [SubToolGetCount] - 1,[IPress,Tool:SubTool:MoveDown] ]"
-	$rename_subtools .= "`n	, i]"
+	if( $tools_count > 1 )
+	{
+		$append_subtools .= "`n`n	/* APPEND SUBTOOLS */"
+		$append_subtools .= "`n	[Loop, " $tools_count - 1 ","
+		$append_subtools .= "`n		[IPress,	Tool:SubTool:Append]"
+		$append_subtools .= "`n		[IPress,	[StrMerge, ""PopUp:"", $tool_names(i + 1)]]"
+		$append_subtools .= "`n	, i]"
+	
+	
+		$rename_subtools .= "`n`n	/* RENAME SUBTOOLS */"
+		$rename_subtools .= "`n	[Loop, " $tools_count ","
+		$rename_subtools .= "`n		[SubToolSelect, 0]"
+		$rename_subtools .= "`n		[ToolSetPath,, $tool_names(i) ]"
+		$rename_subtools .= "`n		[Loop, [SubToolGetCount] - 1,[IPress,Tool:SubTool:MoveDown] ]"
+		$rename_subtools .= "`n	, i]"
+		
+		$footer	:= "`n`n	[IShow,Tool]`n	[IClick, Tool:SubTool, 1]`n`n]"
+	}
 
 
 	FileDelete, %$import_zscript%
@@ -90,8 +111,6 @@ writeImportScript()
 	FileAppend, %$rename_subtools%,	%$import_zscript%
 		
 	FileAppend, %$footer%,	%$import_zscript%
-
-
 }
 
 

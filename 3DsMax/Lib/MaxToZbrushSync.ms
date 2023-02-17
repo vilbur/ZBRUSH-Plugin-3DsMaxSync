@@ -7,10 +7,8 @@ struct MaxToZbrushSync_v
 (
 	/* construct */
 
-
 	/* properties */
 	export_dir	= "c:/Windows/Temp/_ZBRUSH_MAX_SYNC",
-
 
 	current_path = getFilenamePath(getSourceFileName()),
 
@@ -21,33 +19,32 @@ struct MaxToZbrushSync_v
 
 	preset_import = importerPlugin.classes[findItem importerPlugin.classes ObjImp].getIniName(),
 
-	/* dependency */
-	/* reference */
-
-	/* inhered */
 
 	/** Max to zbrush
+	 * 
+	 * Exported file name is object name with prefixed with postion in selection for keep order of subtools in zbrush
 	 */
 	function exportObjToZbrush =
 	(
-		--format "\n"; print "MaxToZbrushSync_v.exportObj()"
+		format "\n"; print "MaxToZbrushSync_v.exportObj()"
 
 		this._clearExportFolder()
 
-		--export_filename	= if maxFileName != "" then trimRight(maxFileName) ".max" else selection[1].name
 		this._setPresetFile (preset_export_file) ( exporterPlugin.classes[findItem exporterPlugin.classes ObjExp].getIniName() )
 
 		objects_to_export = for o in selection where superClassOf o == GeometryClass collect o
 
-		for obj in objects_to_export do
+	
+		for i = 1 to objects_to_export.count do 
 		(
+			obj = objects_to_export[i]
+			
 			select obj
 
-			exportFile ( export_dir + "/" + obj.name + ".obj" ) #noPrompt selectedOnly:true using:ObjExp
+			exportFile ( export_dir + "/"+ i as string + "-_-" + obj.name + ".obj" ) #noPrompt selectedOnly:true using:ObjExp
 		)
 
-			--export_file_path	= export_dir + "/" + export_filename + ".obj"
-
+		select objects_to_export
 
 		DOSCommand ("Start \"\" \""+ahk_path+"\"")
 	),
