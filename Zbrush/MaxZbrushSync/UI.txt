@@ -1,0 +1,31 @@
+
+
+[IPalette, "~VIL-PLUGINS"]
+
+[ISubPalette, "~VIL-PLUGINS:MaxZbrushSync"]
+
+
+/** IMPORTANT: Shortcut is called in "../../3DsMax/Lib/importToZbrush.ahk"
+  *
+  */
+//[IButton, "importObj","importObj",
+[IButton, "~VIL-PLUGINS:MaxZbrushSync:Max to Zbrush","MaxToZbrush",
+
+	//[Note, MaxToZbrush]
+	[FileNameSetNext,"C:/Windows/Temp/_ZBRUSH_MAX_SYNC/importToolsToZbrush.txt"]
+
+	[IPress,ZScript:Load]
+
+,,	128,	CTRL+SHIFT+ALT+'Q',	/*Icon*/,	128
+]
+
+
+
+//[IButton, "Export To Max","ZbrushToMax",
+[IButton, "~VIL-PLUGINS:MaxZbrushSync:Zbrush to Max","Zbrush",
+
+	//[RoutineCall, exportFolderCreate]
+
+	[RoutineCall, exportFromZbrush]
+
+]/*End of ZScript*/

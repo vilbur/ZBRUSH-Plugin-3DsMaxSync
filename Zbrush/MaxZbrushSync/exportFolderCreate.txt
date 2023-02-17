@@ -1,0 +1,24 @@
+
+/** Create or clean export folder
+  *
+  */
+[RoutineDef, exportFolderCreate
+,
+	//[Note, "exportFolderCreate"]
+
+
+	[VarSet, $export_file, [StrMerge, $export_dir, "/", [IGetTitle,Tool:ItemInfo] ] ]
+
+
+	[VarSet, folder_path, $export_dir]
+
+	[VarSet,folderExists,[FileExecute,  "ZFileUtils64.dll","FolderExists",#folder_path]]
+
+	[If,folderExists
+	, // DELETE FILES IN THE FOLDER
+		[VarSet, err, [FileExecute, "ZFileUtils64.dll", "EmptyFolder", #folder_path]]
+	, // CREATE THE FOLDER
+		[VarSet, err, [FileExecute, "ZFileUtils64.dll", "MakeFolder", #folder_path]]
+	]
+
+]

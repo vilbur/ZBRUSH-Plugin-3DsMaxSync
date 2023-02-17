@@ -1,0 +1,2 @@
+
+[VarSet, $export_dir, "C:/Windows/Temp/_ZBRUSH_MAX_SYNC" ]

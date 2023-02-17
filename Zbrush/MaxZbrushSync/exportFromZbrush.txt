@@ -1,0 +1,19 @@
+
+/** exportFromZbrush
+  *
+  */
+[RoutineDef, exportFromZbrush
+,
+	[Note, "exportFromZbrush"]
+
+	//[IPress,Tool:Export]
+	//
+	//[VarSet, import_to_max_ahk, [FileNameResolvePath,  "MaxZbrushSync\importToMax.ahk"]]
+	//[VarSet, err, [FileExecute, "ZFileUtils64.dll", "LaunchAppWithFile",  #import_to_max_ahk]] // execute file
+
+
+//, // PARAMS
+//
+] // END exportFromZbrush()
+//[ IButton, "exportFromZbrush()" , "", [RoutineCall, exportFromZbrush] ]
+

@@ -17,7 +17,7 @@ struct MaxToZbrushSync_v
 	preset_export_file	= current_path + "/Presets/gw_objexp.ini",
 	preset_import_file	= current_path + "/Presets/gw_objimp.ini",
 
-	ahk_path = current_path + "/importToZbrush.ahk",
+	ahk_path = current_path + "/createImportScript.ahk", -- "./createImportScript.ahk"
 
 	preset_import = importerPlugin.classes[findItem importerPlugin.classes ObjImp].getIniName(),
 
@@ -32,14 +32,22 @@ struct MaxToZbrushSync_v
 	(
 		--format "\n"; print "MaxToZbrushSync_v.exportObj()"
 
-		--this._clearExportFolder()
+		this._clearExportFolder()
 
-		export_filename	= if maxFileName != "" then trimRight(maxFileName) ".max" else selection[1].name
-		export_file_path	= export_dir + "/" + export_filename + ".obj"
-
+		--export_filename	= if maxFileName != "" then trimRight(maxFileName) ".max" else selection[1].name
 		this._setPresetFile (preset_export_file) ( exporterPlugin.classes[findItem exporterPlugin.classes ObjExp].getIniName() )
 
-		exportFile export_file_path #noPrompt selectedOnly:true using:ObjExp
+		objects_to_export = for o in selection where superClassOf o == GeometryClass collect o
+
+		for obj in objects_to_export do
+		(
+			select obj
+
+			exportFile ( export_dir + "/" + obj.name + ".obj" ) #noPrompt selectedOnly:true using:ObjExp
+		)
+
+			--export_file_path	= export_dir + "/" + export_filename + ".obj"
+
 
 		DOSCommand ("Start \"\" \""+ahk_path+"\"")
 	),
