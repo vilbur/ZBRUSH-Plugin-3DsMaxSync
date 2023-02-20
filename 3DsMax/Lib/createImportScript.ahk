@@ -37,6 +37,7 @@ writeImportScript()
 	$header	:= "[If, 1,`n"
 	$new_document	:= "`n	[IKeyPress, 78,[IPress, Document:New Document]]"
 	$reset_tools	:= "`n	[IKeyPress, ""1"",[IReset, 3]]`n"
+	$select_subtool_1	.= "`n		[SubToolSelect, 0]"
 	$footer	:= "`n]"
 
 
@@ -109,6 +110,8 @@ writeImportScript()
 	FileAppend, %$append_subtools%,	%$import_zscript%
 	
 	FileAppend, %$rename_subtools%,	%$import_zscript%
+	
+	FileAppend, %$select_subtool_1%,	%$import_zscript%
 		
 	FileAppend, %$footer%,	%$import_zscript%
 }

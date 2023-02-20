@@ -2,9 +2,8 @@
   *
   */
 [RoutineDef, importToMax
-,
-	//[Note, "selectedToMax"]
-	[VarSet, import_to_max_ahk, [FileNameResolvePath,  "importToMax.ahk"]]
-	[VarSet, err, [FileExecute, "ZFileUtils64.dll", "LaunchAppWithFile",  #import_to_max_ahk]] // execute file
+,	
+	[VarSet, import_to_max_ahk, [FileNameResolvePath, [StrMerge, $LIBRARY_PATH, "/importToMax.ahk"] ] ]
+	[VarSet, err, [FileExecute, $ZFILE_UTILS_DLL, "LaunchAppWithFile",  #import_to_max_ahk]] // execute file
 ]
-//[ IButton, "selectedToMax()" , "", [RoutineCall, selectedToMax] ]
+//[IButton, "importToMax()" , "", [RoutineCall, importToMax] ]

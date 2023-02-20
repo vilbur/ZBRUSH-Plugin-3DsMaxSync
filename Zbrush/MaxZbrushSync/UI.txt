@@ -8,7 +8,8 @@
 /** IMPORTANT: Shortcut is called in "../../3DsMax/Lib/importToZbrush.ahk"
   *
   */
-[IButton, [StrMerge, $CONTROSL_PATH,	"Import To Zbrush"], "Import exported obj files to Zbrush"
+[IButton, [StrMerge, $PLUGINS_MENU, ":",	"Import To Zbrush"], "Import exported obj files to Zbrush"
+ 
 ,
 	[FileNameSetNext,"C:/Windows/Temp/_ZBRUSH_MAX_SYNC/importToolsToZbrush.txt"]
 
@@ -25,6 +26,9 @@
 	[RoutineCall, exportDirCreate]
 	
 	[RoutineCall, exportSubTools, 0]
+	
+	[RoutineCall, importToMax]
+	
 , , 96, , , 40]
 
 
@@ -35,6 +39,9 @@
 	[RoutineCall, exportDirCreate]
 
 	[RoutineCall, exportFromZbrush, [IGetTitle, Tool:SubTool:ItemInfo]]
+	
+	[RoutineCall, importToMax]
+
 , , 96, , , 40]
 
 
@@ -45,8 +52,7 @@
 	[RoutineCall, exportDirCreate]
 
 	[RoutineCall, exportSubTools, 1]
+	
+	[RoutineCall, importToMax]
+
 , , 96, , , 40]
-
-
-
-[ IButton, "exportDirCreate()" , "", [RoutineCall, exportDirCreate] ]

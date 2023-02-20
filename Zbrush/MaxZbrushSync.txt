@@ -3,8 +3,11 @@
 [VarDef, $PLUGIN_SUBMENU,	"MaxZbrushSync"]
 
 
-[VarSet, $CONTROSL_PATH,	[StrMerge, $PLUGINS_MENU, ":"]]
-//[VarSet, $CONTROSL_PATH,	"" ] // DEV
+[VarSet, $LIBRARY_PATH, [FileNameResolvePath,  $PLUGIN_SUBMENU ] ]
+
+
+//[VarSet, $CONTROSL_PATH,	[StrMerge, $PLUGINS_MENU, ":"]]
+[VarSet, $CONTROSL_PATH,	"" ] // DEV
 
 [VarSet, $ZFILE_UTILS_DLL, [StrMerge, $PLUGIN_SUBMENU, "\\ZFileUtils64.dll"] ]
 

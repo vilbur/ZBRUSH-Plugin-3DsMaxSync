@@ -3,7 +3,7 @@
   */
 [RoutineDef, exportFromZbrush
 ,
-	[FileNameSetNext, [StrMerge, "C:/Windows/Temp/_ZBRUSH_MAX_SYNC/", $tool_name, "obj"]]
+	[FileNameSetNext, [StrMerge, $export_dir, "/", $tool_name, "obj"]]
 
 	[IPress,Tool:Export]
 	
