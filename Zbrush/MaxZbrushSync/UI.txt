@@ -8,10 +8,8 @@
 /** IMPORTANT: Shortcut is called in "../../3DsMax/Lib/importToZbrush.ahk"
   *
   */
-[IButton, [StrMerge, $CONTROSL_PATH,	"importObj"], "importObj",
-//[IButton, "~VIL-PLUGINS:MaxZbrushSync:Max to Zbrush","MaxToZbrush",
-
-	//[Note, MaxToZbrush]
+[IButton, [StrMerge, $CONTROSL_PATH,	"Import To Zbrush"], "Import exported obj files to Zbrush"
+,
 	[FileNameSetNext,"C:/Windows/Temp/_ZBRUSH_MAX_SYNC/importToolsToZbrush.txt"]
 
 	[IPress,ZScript:Load]
@@ -20,32 +18,31 @@
 ]
 
 
-
-//[IButton, "~VIL-PLUGINS:MaxZbrushSync:Zbrush to Max","Zbrush",
-[IButton, [StrMerge, $CONTROSL_PATH, "Export To Max"],"ZbrushToMax",
-
-	//[RoutineCall, exportFolderCreate]
-
+/** 
+  */
+[IButton, [StrMerge, $CONTROSL_PATH, "Export To Max"],"ZbrushToMax"
+,
 	[RoutineCall, exportFromZbrush]
 	
 ,,	128,,	/*Icon*/,	64
 ]
 
-
-//[ IButton, "~VIL-PLUGINS:MaxZbrushSync:Selected To Max" , ""
+/** 
+  */
 [ IButton, [StrMerge, $CONTROSL_PATH, "Selected To Max"] , ""
 ,
 	[RoutineCall, exportFromZbrush, [IGetTitle, Tool:SubTool:ItemInfo]]
 ]
 
-
-//[ IButton, "~VIL-PLUGINS:MaxZbrushSync:All To Max" , ""
+/** 
+  */
 [ IButton, [StrMerge, $CONTROSL_PATH, "All To Max"] , ""
 ,
 	[RoutineCall, exportSubTools, 0]
 ]
-  
-//[ IButton, "~VIL-PLUGINS:MaxZbrushSync:Visible To Max" , ""
+
+/** 
+  */
 [ IButton, "Visible To Max" , ""
 ,
 	[RoutineCall, exportSubTools, 1]
