@@ -14,36 +14,39 @@
 
 	[IPress,ZScript:Load]
 
-,,	128,	CTRL+SHIFT+ALT+'Q',	/*Icon*/,	64
+,,,	CTRL+SHIFT+ALT+'Q',	/*Icon*/,
 ]
 
 
 /** 
   */
-[IButton, [StrMerge, $CONTROSL_PATH, "Export To Max"],"ZbrushToMax"
+[ IButton, [StrMerge, $CONTROSL_PATH, "     All > Max"] , "Export All subtools to 3Ds Max"
 ,
-	[RoutineCall, exportFromZbrush]
+	[RoutineCall, exportDirCreate]
 	
-,,	128,,	/*Icon*/,	64
-]
-
-/** 
-  */
-[ IButton, [StrMerge, $CONTROSL_PATH, "Selected To Max"] , ""
-,
-	[RoutineCall, exportFromZbrush, [IGetTitle, Tool:SubTool:ItemInfo]]
-]
-
-/** 
-  */
-[ IButton, [StrMerge, $CONTROSL_PATH, "All To Max"] , ""
-,
 	[RoutineCall, exportSubTools, 0]
-]
+, , 96, , , 40]
+
 
 /** 
   */
-[ IButton, "Visible To Max" , ""
+[ IButton, [StrMerge, $CONTROSL_PATH, "Selected > Max"] , "Export selected subtools to 3Ds Max"
 ,
+	[RoutineCall, exportDirCreate]
+
+	[RoutineCall, exportFromZbrush, [IGetTitle, Tool:SubTool:ItemInfo]]
+, , 96, , , 40]
+
+
+/** 
+  */
+[ IButton, [StrMerge, $CONTROSL_PATH, "  Visible > Max"] , "Export visible subtools to 3Ds Max"
+,
+	[RoutineCall, exportDirCreate]
+
 	[RoutineCall, exportSubTools, 1]
-]
+, , 96, , , 40]
+
+
+
+[ IButton, "exportDirCreate()" , "", [RoutineCall, exportDirCreate] ]

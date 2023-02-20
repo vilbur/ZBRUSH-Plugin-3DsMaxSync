@@ -1,15 +1,19 @@
 
 [VarDef, $PLUGINS_MENU, 	"~MaxSync"]
-//[VarDef, $PLUGIN_SUBMENU,	"MaxZbrushSync"]
-[VarDef, $PLUGIN_SUBMENU,	""]
+[VarDef, $PLUGIN_SUBMENU,	"MaxZbrushSync"]
 
-//[VarSet, $CONTROSL_PATH,	[StrMerge, $PLUGINS_MENU, ":", $PLUGIN_SUBMENU, ":"]]
-[VarSet, $CONTROSL_PATH,	"" ] // DEV
+
+[VarSet, $CONTROSL_PATH,	[StrMerge, $PLUGINS_MENU, ":"]]
+//[VarSet, $CONTROSL_PATH,	"" ] // DEV
+
+[VarSet, $ZFILE_UTILS_DLL, [StrMerge, $PLUGIN_SUBMENU, "\\ZFileUtils64.dll"] ]
 
 <zscriptinsert, "MaxZbrushSync/UI.txt">
 
-<zscriptinsert, "MaxZbrushSync/exportFolder.txt">
+<zscriptinsert, "MaxZbrushSync/exportDir.txt">
+<zscriptinsert, "MaxZbrushSync/exportDirCreate.txt">
 <zscriptinsert, "MaxZbrushSync/subToolVisibilityTest.txt">
 <zscriptinsert, "MaxZbrushSync/exportFromZbrush.txt">
 <zscriptinsert, "MaxZbrushSync/exportSubTools.txt">
 <zscriptinsert, "MaxZbrushSync/importToMax.txt">
+
