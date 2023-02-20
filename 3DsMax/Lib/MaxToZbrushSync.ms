@@ -12,13 +12,12 @@ struct MaxToZbrushSync_v
 
 	current_path = getFilenamePath(getSourceFileName()),
 
-	preset_export_file	= current_path + "/Presets/gw_objexp.ini",
-	preset_import_file	= current_path + "/Presets/gw_objimp.ini",
-
 	ahk_path = current_path + "/createImportScript.ahk", -- "./createImportScript.ahk"
 
-	preset_import = importerPlugin.classes[findItem importerPlugin.classes ObjImp].getIniName(),
+	Exporter = exporterPlugin.classes[findItem exporterPlugin.classes ObjExp],
+	Importer = importerPlugin.classes[findItem importerPlugin.classes ObjImp],
 
+	imported_objects	= #(),
 
 	/** Max to zbrush
 	 * 
@@ -30,18 +29,15 @@ struct MaxToZbrushSync_v
 
 		this._clearExportFolder()
 
-		this._setPresetFile (preset_export_file) ( exporterPlugin.classes[findItem exporterPlugin.classes ObjExp].getIniName() )
-
 		objects_to_export = for o in selection where superClassOf o == GeometryClass collect o
 
-	
 		for i = 1 to objects_to_export.count do 
 		(
 			obj = objects_to_export[i]
 			
 			select obj
 
-			exportFile ( export_dir + "/"+ i as string + "-_-" + obj.name + ".obj" ) #noPrompt selectedOnly:true using:ObjExp
+			exportFile ( export_dir + "/"+ i as string + "-_-" + obj.name + ".obj" ) #noPrompt selectedOnly:true using:Exporter
 		)
 
 		select objects_to_export
@@ -54,16 +50,19 @@ struct MaxToZbrushSync_v
 	function importObjToMax =
 	(
 		--format "\n"; print "MaxToZbrushSync_v.importObj()"
-		obj_files = getFiles (export_dir + "\\*.obj")
-
-		this._setPresetFile (preset_import_file) ( importerPlugin.classes[findItem importerPlugin.classes ObjImp].getIniName() )
-
+		obj_files	= getFiles (export_dir + "\\*.obj")
+		imported_objects	= #()
+		
 		objects_before_import = for o in geometry collect o
 
-		importFile obj_files[1] #noPrompt using:ObjImp
-		--importFile obj_files[1] using:ObjImp
+		for file in obj_files do 
+		(
+			importFile file #noPrompt using:Importer
+						
+			this._replaceImportedObjects(objects_before_import)( selection[1] )( getFilenameFile( file ))
+		)
 
-		--this._replaceImportedObjects( objects_before_import )( selection as Array )
+		select imported_objects
 	),
 
 
@@ -82,26 +81,65 @@ struct MaxToZbrushSync_v
 
 	/** Replace imported objects
 	 */
-	function _replaceImportedObjects objects_before_import imported_objects =
+	function _replaceImportedObjects objects_before_import imported_object imported_object_name =
 	(
-		clearListener()
-		format "\n"; print "MaxToZbrushSync_v._replaceImportedObjects()"
-		format "objects_before_import	= % \n" objects_before_import
-		format "imported_objects	= % \n" imported_objects
-
-		objects_names_before_import = for o in objects_before_import collect o.name
-
-		--for imported_object in imported_objects where ( index = findItem objects_names_before_import imported_object.name ) > 0 do
-		--	format "imported_object	= % \n" imported_object
-
-		for imported_object in imported_objects where ( index = findItem objects_names_before_import imported_object.name ) > 0 do
+		--format "\n"; print "MaxToZbrushSync_v._replaceImportedObjects()"
+		delete_imported = false
+		
+		for obj in objects_before_import where obj.name == imported_object_name do 
 		(
-			format "index	= % \n" index
+			if ( instances = this._getInstances(obj)).count == 0 then
+			(
+				imported_object.name	= obj.name
+				imported_object.pivot	= obj.pivot
+				imported_object.wirecolor	= obj.wirecolor
+				imported_object.transform	= obj.transform
+				imported_object.material	= obj.material
+				
+				this._relinkHierarchy(obj)(imported_object)
+				
+				append imported_objects imported_object
 
+				delete obj
+			)
+			else
+			(
+				append imported_objects instances[1]
 
+				for _instance in instances do 
+					instanceReplace _instance imported_object
+				
+				delete_imported = true
+			)
 		)
+		
+		delete imported_object
 	),
+	
+	/** Get instances
+	  * 
+	 */
+	function _getInstances obj  =
+	(
+		--format "\n"; print "Selection_v.getInstances()"
+		instances = #()
+		
+		InstanceMgr.GetInstances obj &instances
 
+		instances --return
+	),
+	
+	/** Relink hierarchy
+	 */
+	function _relinkHierarchy source_object target_object =
+	(
+		--format "\n"; print "GroupCreator_v._relinkHierarchy()"
+		if source_object != undefined then
+			target_object.parent = source_object.parent
+	
+		for child in source_object.children do
+			child.parent = target_object
+	),
 
 	/** Clear export folder
 	  * remove ".obj" and ".mtl" files

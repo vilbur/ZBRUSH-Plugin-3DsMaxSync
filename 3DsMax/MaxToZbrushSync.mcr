@@ -26,6 +26,11 @@ toolTip:	""
 --icon:	"Groupbox:Nodes"
 --icon:	"control:checkbutton"
 (
+	clearListener()
 	--messageBox "_3DsMaxSync_to_max" title:"Title"  beep:false
-	(MaxToZbrushSync_v()).importObjToMax()
+	undo "Import Zbrush" on
+	(
+		(MaxToZbrushSync_v()).importObjToMax()
+	)
+	
 )
