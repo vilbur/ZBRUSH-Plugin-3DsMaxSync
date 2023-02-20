@@ -1,0 +1,35 @@
+/** exportSubTools
+  *
+  */
+[RoutineDef, exportSubTools
+,
+	//[Note, "exportSubTools"]
+	
+	[VarSet, current,[SubToolGetActiveIndex]]
+
+	[Loop, [SubToolGetCount],
+	 
+		[SubToolSelect, i]
+		
+		[If, [Var, only_visible] 
+		, // THEN
+		
+			[VarSet, is_visible, 0]
+			
+			[RoutineCall, subToolVisibilityTest, is_visible, i ]
+			
+			[If, [Var, is_visible] 
+			, // THEN
+				[RoutineCall, exportFromZbrush, [IGetTitle, Tool:SubTool:ItemInfo]]
+			]
+		, // THEN
+			[RoutineCall, exportFromZbrush, [IGetTitle, Tool:SubTool:ItemInfo]]
+		]
+
+	, i]
+		
+ 	[SubToolSelect, current]
+	
+, // PARAMS
+	only_visible
+]

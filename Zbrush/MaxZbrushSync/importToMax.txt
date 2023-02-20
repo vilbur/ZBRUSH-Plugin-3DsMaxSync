@@ -1,0 +1,10 @@
+/** importToMax
+  *
+  */
+[RoutineDef, importToMax
+,
+	//[Note, "selectedToMax"]
+	[VarSet, import_to_max_ahk, [FileNameResolvePath,  "importToMax.ahk"]]
+	[VarSet, err, [FileExecute, "ZFileUtils64.dll", "LaunchAppWithFile",  #import_to_max_ahk]] // execute file
+]
+//[ IButton, "selectedToMax()" , "", [RoutineCall, selectedToMax] ]
