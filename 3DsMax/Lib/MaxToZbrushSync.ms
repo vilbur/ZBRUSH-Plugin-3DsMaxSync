@@ -12,7 +12,7 @@ struct MaxToZbrushSync_v
 
 	current_path = getFilenamePath(getSourceFileName()),
 
-	ahk_path = current_path + "/createImportScript.ahk", -- "./createImportScript.ahk"
+	create_import_script	= current_path + "/createImportScript.ahk", -- "./createImportScript.ahk"
 
 	Exporter = exporterPlugin.classes[findItem exporterPlugin.classes ObjExp],
 	Importer = importerPlugin.classes[findItem importerPlugin.classes ObjImp],
@@ -31,18 +31,12 @@ struct MaxToZbrushSync_v
 
 		objects_to_export = for o in selection where superClassOf o == GeometryClass collect o
 
-		for i = 1 to objects_to_export.count do 
-		(
-			obj = objects_to_export[i]
-			
-			select obj
-
-			exportFile ( export_dir + "/"+ i as string + "-_-" + obj.name + ".obj" ) #noPrompt selectedOnly:true using:Exporter
-		)
+		for i = 1 to objects_to_export.count do
+			this._exportObject (objects_to_export[i]) (export_dir + "/"+ i as string + "-_-" + obj.name + ".obj" ) (Exporter)
 
 		select objects_to_export
 
-		DOSCommand ("Start \"\" \""+ahk_path+"\"")
+		DOSCommand ("Start \"\" \""+create_import_script+"\"")
 	),
 
 	/** Zbrush to max
@@ -57,9 +51,16 @@ struct MaxToZbrushSync_v
 
 		for file in obj_files do 
 		(
+		 
 			importFile file #noPrompt using:Importer
-						
-			this._replaceImportedObjects(objects_before_import)( selection[1] )( getFilenameFile( file ))
+			
+			obj = selection[1]
+			
+			this._flipUV( obj )
+
+			maxOps.CollapseNodeTo obj 1 true
+
+			this._replaceImportedObjects(objects_before_import)( obj )( getFilenameFile( file ))
 		)
 
 		select imported_objects
@@ -68,7 +69,31 @@ struct MaxToZbrushSync_v
 
 	private
 
+	/** Export object with flipped UV`s in V direction
+	 */
+	function _exportObject obj export_path Exporter =
+	(
+		--format "\n"; print "MaxToZbrushSync_v._exportObjects()"
+		UVWxform = this._flipUV(obj)
 
+		exportFile ( export_path ) #noPrompt selectedOnly:true using:Exporter
+
+		deleteModifier obj UVWxform
+	),
+	
+	/** Flip
+	 */
+	function _flipUV obj =
+	(
+		--format "\n"; print "MaxToZbrushSync_v.flip()"
+		UVWxform = UVW_Xform ()
+		UVWxform.V_Flip = 1
+		
+		addModifier obj UVWxform
+
+		UVWxform --return
+	),
+	
 	/** Set preset file
 	 */
 	function _setPresetFile preset_file exporter_preset_path =
