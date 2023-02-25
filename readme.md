@@ -1,9 +1,14 @@
 # 3DsMaxSync
 
 
-# RUN 3DS MAX and ZBRUSH AS ADMINISTRATOR
+### IMPORTANT: RUN 3DS MAX and ZBRUSH AS ADMINISTRATOR
 
 
-1. MaxScript Export obj
-2. Ahk - Create zScript file loadExportedTool.txt
-3. AHk - Run zScript loadExportedTool.txt`
+## Export Objects between Zbrush & 3DsMax and vice versa
+
+
+### Supported features
+
+1. Export each object as subtool
+1. Keep instances on import to 3Ds Max
+1. Keep Object hierarchy on import to 3Ds Max

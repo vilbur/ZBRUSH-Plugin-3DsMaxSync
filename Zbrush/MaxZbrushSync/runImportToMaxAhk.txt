@@ -1,9 +1,9 @@
-/** importToMax
+/** runImportToMaxAhk
   *
   */
-[RoutineDef, importToMax
+[RoutineDef, runImportToMaxAhk
 ,	
 	[VarSet, import_to_max_ahk, [FileNameResolvePath, [StrMerge, $LIBRARY_PATH, "/importToMax.ahk"] ] ]
 	[VarSet, err, [FileExecute, $ZFILE_UTILS_DLL, "LaunchAppWithFile",  #import_to_max_ahk]] // execute file
 ]
-//[IButton, "importToMax()" , "", [RoutineCall, importToMax] ]
+//[IButton, "runImportToMaxAhk()" , "", [RoutineCall, runImportToMaxAhk] ]

@@ -1,0 +1,13 @@
+/** importSetup
+  *
+  */
+[RoutineDef, importSetup
+,
+	//[IUnPress,Preferences:ImportExport:NormalMapFlipVert]
+	[IUnPress,Preferences:ImportExport:iFlipX]
+	[IPress,Preferences:ImportExport:iFlipY]
+	[IPress,Preferences:ImportExport:iFlipZ]
+	[IUnPress,Preferences:ImportExport:iSwitchYZ]
+	[IUnPress,Preferences:ImportExport:iFlipNormals]
+]
+//[IButton, "importSetup()" , "", [RoutineCall, importSetup] ]

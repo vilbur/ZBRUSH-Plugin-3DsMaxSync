@@ -32,7 +32,7 @@ struct MaxToZbrushSync_v
 		objects_to_export = for o in selection where superClassOf o == GeometryClass collect o
 
 		for i = 1 to objects_to_export.count do
-			this._exportObject (objects_to_export[i]) (export_dir + "/"+ i as string + "-_-" + obj.name + ".obj" ) (Exporter)
+			this._exportObject (objects_to_export[i])(i)
 
 		select objects_to_export
 
@@ -71,12 +71,12 @@ struct MaxToZbrushSync_v
 
 	/** Export object with flipped UV`s in V direction
 	 */
-	function _exportObject obj export_path Exporter =
+	function _exportObject obj index =
 	(
 		--format "\n"; print "MaxToZbrushSync_v._exportObjects()"
 		UVWxform = this._flipUV(obj)
 
-		exportFile ( export_path ) #noPrompt selectedOnly:true using:Exporter
+		exportFile ( export_dir + "/"+ index as string + "-_-" + obj.name + ".obj" ) #noPrompt selectedOnly:true using:Exporter
 
 		deleteModifier obj UVWxform
 	),

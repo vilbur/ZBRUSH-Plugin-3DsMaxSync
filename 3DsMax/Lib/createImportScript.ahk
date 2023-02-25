@@ -12,8 +12,6 @@ writeImportScript()
 	$import_zscript	:= $export_dir "/importToolsToZbrush.txt"
 	$dates	:= $export_dir "/dates.txt"
 	$files_obj	:= []
-
-	;FileDelete, %$test%
 	
 	/*
 		1) Get .obj and .mtl files

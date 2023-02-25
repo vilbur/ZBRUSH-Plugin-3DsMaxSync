@@ -6,17 +6,18 @@
 [VarSet, $LIBRARY_PATH, [FileNameResolvePath,  $PLUGIN_SUBMENU ] ]
 
 
-//[VarSet, $CONTROSL_PATH,	[StrMerge, $PLUGINS_MENU, ":"]]
-[VarSet, $CONTROSL_PATH,	"" ] // DEV
+[VarSet, $CONTROSL_PATH,	[StrMerge, $PLUGINS_MENU, ":"]]
+//[VarSet, $CONTROSL_PATH,	"" ] // DEV
 
 [VarSet, $ZFILE_UTILS_DLL, [StrMerge, $PLUGIN_SUBMENU, "\\ZFileUtils64.dll"] ]
 
 <zscriptinsert, "MaxZbrushSync/UI.txt">
 
 <zscriptinsert, "MaxZbrushSync/exportDir.txt">
+<zscriptinsert, "MaxZbrushSync/runImportToMaxAhk.txt">
+<zscriptinsert, "MaxZbrushSync/importSetup.txt">
 <zscriptinsert, "MaxZbrushSync/exportDirCreate.txt">
 <zscriptinsert, "MaxZbrushSync/subToolVisibilityTest.txt">
 <zscriptinsert, "MaxZbrushSync/exportFromZbrush.txt">
 <zscriptinsert, "MaxZbrushSync/exportSubTools.txt">
-<zscriptinsert, "MaxZbrushSync/importToMax.txt">
 

@@ -11,6 +11,8 @@
 [IButton, [StrMerge, $PLUGINS_MENU, ":",	"Import To Zbrush"], "Import exported obj files to Zbrush"
  
 ,
+	[RoutineCall, importSetup]
+
 	[FileNameSetNext,"C:/Windows/Temp/_ZBRUSH_MAX_SYNC/importToolsToZbrush.txt"]
 
 	[IPress,ZScript:Load]
@@ -27,7 +29,7 @@
 	
 	[RoutineCall, exportSubTools, 0]
 	
-	[RoutineCall, importToMax]
+	[RoutineCall, runImportToMaxAhk]
 	
 , , 96, , , 40]
 
@@ -40,7 +42,7 @@
 
 	[RoutineCall, exportFromZbrush, [IGetTitle, Tool:SubTool:ItemInfo]]
 	
-	[RoutineCall, importToMax]
+	[RoutineCall, runImportToMaxAhk]
 
 , , 96, , , 40]
 
@@ -53,6 +55,6 @@
 
 	[RoutineCall, exportSubTools, 1]
 	
-	[RoutineCall, importToMax]
+	[RoutineCall, runImportToMaxAhk]
 
 , , 96, , , 40]
