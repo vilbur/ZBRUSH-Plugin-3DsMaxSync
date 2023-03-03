@@ -17,6 +17,7 @@ struct MaxToZbrushSync_v
 	Exporter = exporterPlugin.classes[findItem exporterPlugin.classes ObjExp],
 	Importer = importerPlugin.classes[findItem importerPlugin.classes ObjImp],
 
+	objects_to_export	= #(),
 	imported_objects	= #(),
 
 	/** Max to zbrush
@@ -30,13 +31,15 @@ struct MaxToZbrushSync_v
 		this._clearExportFolder()
 
 		objects_to_export = for o in selection where superClassOf o == GeometryClass collect o
-
+		
 		for i = 1 to objects_to_export.count do
-			this._exportObject (objects_to_export[i])(i)
+			this._exportObject(i)
 
 		select objects_to_export
 
 		DOSCommand ("Start \"\" \""+create_import_script+"\"")
+		
+		format "Exported to Zbrush: % \n" (for o in objects_to_export collect o.name)
 	),
 
 	/** Zbrush to max
@@ -71,14 +74,32 @@ struct MaxToZbrushSync_v
 
 	/** Export object with flipped UV`s in V direction
 	 */
-	function _exportObject obj index =
+	function _exportObject index =
 	(
 		--format "\n"; print "MaxToZbrushSync_v._exportObjects()"
+		
+		obj = objects_to_export[index]
+		
 		UVWxform = this._flipUV(obj)
+		
+		select obj
 
-		exportFile ( export_dir + "/"+ index as string + "-_-" + obj.name + ".obj" ) #noPrompt selectedOnly:true using:Exporter
+		exportFile ( export_dir + "/"+ (this._getCounterPrefix (index)) + "-_-" + obj.name + ".obj" ) #noPrompt selectedOnly:true using:Exporter
 
 		deleteModifier obj UVWxform
+	),
+	
+	/** Get counter prefix
+	 */
+	function _getCounterPrefix index =
+	(
+		--format "\n"; print "MaxToZbrushSync_v._getCounterPrefix()"
+		
+		prefix = ""
+		
+		for i = 1 to (objects_to_export.count as string ).count - (index as string ).count do prefix += "0"
+		
+		prefix + index as string --return
 	),
 	
 	/** Flip
@@ -109,36 +130,31 @@ struct MaxToZbrushSync_v
 	function _replaceImportedObjects objects_before_import imported_object imported_object_name =
 	(
 		--format "\n"; print "MaxToZbrushSync_v._replaceImportedObjects()"
-		delete_imported = false
+		--delete_imported = false
 		
 		for obj in objects_before_import where obj.name == imported_object_name do 
 		(
-			if ( instances = this._getInstances(obj)).count == 0 then
-			(
-				imported_object.name	= obj.name
-				imported_object.pivot	= obj.pivot
-				imported_object.wirecolor	= obj.wirecolor
-				imported_object.transform	= obj.transform
-				imported_object.material	= obj.material
-				
-				this._relinkHierarchy(obj)(imported_object)
-				
-				append imported_objects imported_object
+			instances = this._getInstances(obj)
 
-				delete obj
+			imported_object.name	= obj.name
+			imported_object.pivot	= obj.pivot
+			imported_object.wirecolor	= obj.wirecolor
+			imported_object.transform	= obj.transform
+			
+			ResetXForm	imported_object
+			collapseStack	imported_object
+
+			if instances.count > 1 then
+			(
+				instanceReplace instances imported_object
+				
+				delete imported_object
 			)
 			else
-			(
-				append imported_objects instances[1]
-
-				for _instance in instances do 
-					instanceReplace _instance imported_object
-				
-				delete_imported = true
-			)
+				delete obj
+	
 		)
 		
-		delete imported_object
 	),
 	
 	/** Get instances

@@ -36,23 +36,25 @@ writeImportScript()
 	$new_document	:= "`n	[IKeyPress, 78,[IPress, Document:New Document]]"
 	$reset_tools	:= "`n	[IKeyPress, ""1"",[IReset, 3]]`n"
 	$select_subtool_1	.= "`n		[SubToolSelect, 0]"
+	$show_subtools	:= ""
 	$footer	:= "`n]"
 
 
-	$vardef	:= "`n	[VarDef, $tool_paths("	$tools_count ") ]"
-	$vardef	.= "`n	[VarDef, $tool_names("	$tools_count ") ]"
-	$vardef	.= "`n	[VarDef, $subt_names("	$tools_count ") ]`n"
+	$define_arrays	:= "`n	[VarDef, $set_tool_paths("	$tools_count ") ]"
+	$define_arrays	.= "`n	[VarDef, $tool_names("	$tools_count ") ]"
+	$define_arrays	.= "`n	[VarDef, $subt_names("	$tools_count ") ]`n"
 
 
-	$tool_paths := ""
+	$set_tool_paths := ""
+	
 	For $index, $file_path in $files_obj
-		$tool_paths .= "`n	[VarSet, $tool_paths(" $index - 1 "),	""" $file_path """ ]"
+		$set_tool_paths .= "`n	[VarSet, $set_tool_paths(" $index - 1 "),	""" $file_path """ ]"
 
 
 	$import_tools .= "`n`n	/*    IMPORT TOOLS    */"
 	$import_tools .= "`n	[Loop, " $tools_count ","
 	$import_tools .= "`n		[IPress,Tool:SimpleBrush]"
-	$import_tools .= "`n		[FileNameSetNext, $tool_paths(i) ]"
+	$import_tools .= "`n		[FileNameSetNext, $set_tool_paths(i) ]"
 	$import_tools .= "`n		[IPress, Tool:Import]"
 	$import_tools .= "`n		[VarSet, $tool_names(i),	[IGetTitle, Tool:Current Tool, 0]]"
 	$import_tools .= "`n		[VarSet, $subt_names(i),	[IGetTitle, Tool:Current Tool  ]]"
@@ -62,7 +64,7 @@ writeImportScript()
 	$load_first_tool .= "`n`n	/*    LOAD FIRST TOOL    */"
 	$load_first_tool .= "`n	[IPress, [StrMerge, ""Tool:"", $tool_names(0)] ]"
 	$load_first_tool .= "`n	[IPress, Stroke:DragRect]"
-	;$load_first_tool .= "`n	[CanvasStroke, (ZObjStrokeV02n2=H41EV434H41EV434)]"
+	;$load_first_tool .= "`n	[CanvasStroke, (ZObjStrokeV02n2=H229V214H229V214)]"
 	$load_first_tool .= "`n	[CanvasStroke,(ZObjStrokeV02n10=H126V47DYH126V47DK1Xh1267Fv47C80H126V47EH126V47FH126V480H126V481H126V482H126V483H126V483)]"
 	$load_first_tool .= "`n	[IPress, Transform:Edit]"
 	$load_first_tool .= "`n	[IPress, Transform:Fit]"
@@ -84,7 +86,10 @@ writeImportScript()
 		$rename_subtools .= "`n		[Loop, [SubToolGetCount] - 1,[IPress,Tool:SubTool:MoveDown] ]"
 		$rename_subtools .= "`n	, i]"
 		
-		$footer	:= "`n`n	[IShow,Tool]`n	[IClick, Tool:SubTool, 1]`n`n]"
+		
+		$show_subtools	:= "`n`n	[ISet,Tool:SubTool:Visible Count," $tools_count "]"
+
+		$show_subtools	.= "`n	[IShow,Tool]`n	[IClick, Tool:SubTool, 1]"
 	}
 
 
@@ -93,13 +98,13 @@ writeImportScript()
 
 	FileAppend, %$header%,	%$import_zscript%
 		
+	;FileAppend, %$reset_tools%,	%$import_zscript%
+		
 	FileAppend, %$new_document%,	%$import_zscript%
 		
-	FileAppend, %$reset_tools%,	%$import_zscript%
+	FileAppend, %$define_arrays%,	%$import_zscript%
 		
-	FileAppend, %$vardef%,	%$import_zscript%
-		
-	FileAppend, %$tool_paths%,	%$import_zscript%
+	FileAppend, %$set_tool_paths%,	%$import_zscript%
 		
 	FileAppend, %$import_tools%,	%$import_zscript%
 		
@@ -111,6 +116,8 @@ writeImportScript()
 	
 	FileAppend, %$select_subtool_1%,	%$import_zscript%
 		
+	FileAppend, %$show_subtools%,	%$import_zscript%
+	
 	FileAppend, %$footer%,	%$import_zscript%
 }
 
