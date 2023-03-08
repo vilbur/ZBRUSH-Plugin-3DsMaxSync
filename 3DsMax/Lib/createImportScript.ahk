@@ -33,6 +33,7 @@ writeImportScript()
 	$new_document	:= "`n	[IKeyPress, 78,[IPress, Document:New Document]]"
 	$select_subtool_1	:= "`n	[SubToolSelect, 0]"
 	$restore_tools	:= "`n	[IPress, ""Tool:Restore Configuration""]"
+	$enable_perspective	:= "`n	[IPress,Draw:Perspective]"
 	$footer	:= "`n]"
 
 
@@ -111,6 +112,8 @@ writeImportScript()
 	FileAppend, %$select_subtool_1%,	%$import_zscript%
 
 	FileAppend, %$restore_tools%,	%$import_zscript%
+
+	FileAppend, %$enable_perspective%,	%$import_zscript%
 
 	FileAppend, %$footer%,	%$import_zscript%
 }
