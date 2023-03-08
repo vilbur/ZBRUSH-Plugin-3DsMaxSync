@@ -8,7 +8,7 @@
 /** IMPORTANT: Shortcut is called in "../../3DsMax/Lib/importToZbrush.ahk"
   *
   */
-[IButton, [StrMerge, $PLUGINS_MENU, ":",	"Import To Zbrush"], "Import exported obj files to Zbrush"
+[IButton, [StrMerge, $PLUGINS_MENU, ":",	"Import Max"], "Import exported obj files to Zbrush"
  
 ,
 	[RoutineCall, importSetup]
