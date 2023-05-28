@@ -5,11 +5,14 @@
 //[ISubPalette, [StrMerge, $PLUGINS_MENU,	":", $PLUGIN_SUBMENU]]
 
 
-/** IMPORTANT: Shortcut is called in "../../3DsMax/Lib/importToZbrush.ahk"
+/** IMPORTANT:
+  * 		Import to ZBrush is managed by keyboard shortcut CTRL+SHIFT+ALT+Q defined in this button
+  *
+  * 		Keys are send in method: executeKeyboardShortcutInZbrush() in file: "./../3DsMax/Lib/createImportScript.ahk"
   *
   */
 [IButton, [StrMerge, $PLUGINS_MENU, ":",	"Import Max"], "Import exported obj files to Zbrush"
- 
+
 ,
 	[RoutineCall, importSetup]
 
@@ -17,44 +20,44 @@
 
 	[IPress,ZScript:Load]
 
-,,,	CTRL+SHIFT+ALT+'Q',	/*Icon*/,
-]
+,, 96,	CTRL+SHIFT+ALT+'Q',	/*Icon*/,
+40]
 
 
-/** 
+/**
   */
 [ IButton, [StrMerge, $CONTROSL_PATH, "     All > Max"] , "Export All subtools to 3Ds Max"
 ,
 	[RoutineCall, exportDirCreate]
-	
+
 	[RoutineCall, exportSubTools, 0]
-	
+
 	[RoutineCall, runImportToMaxAhk]
-	
+
 , , 96, , , 40]
 
 
-/** 
+/**
   */
 [ IButton, [StrMerge, $CONTROSL_PATH, "Selected > Max"] , "Export selected subtools to 3Ds Max"
 ,
 	[RoutineCall, exportDirCreate]
 
 	[RoutineCall, exportFromZbrush, [IGetTitle, Tool:SubTool:ItemInfo]]
-	
+
 	[RoutineCall, runImportToMaxAhk]
 
 , , 96, , , 40]
 
 
-/** 
+/**
   */
 [ IButton, [StrMerge, $CONTROSL_PATH, "  Visible > Max"] , "Export visible subtools to 3Ds Max"
 ,
 	[RoutineCall, exportDirCreate]
 
 	[RoutineCall, exportSubTools, 1]
-	
+
 	[RoutineCall, runImportToMaxAhk]
 
 , , 96, , , 40]

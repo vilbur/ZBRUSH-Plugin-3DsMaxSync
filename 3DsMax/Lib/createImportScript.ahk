@@ -2,6 +2,7 @@
 
 global $export_dir	:= "C:/Windows/Temp/_ZBRUSH_MAX_SYNC"
 
+
 /**
  */
 writeImportScript()
@@ -121,7 +122,7 @@ writeImportScript()
 
 /**
  */
-executeCommandInZbrush()
+executeKeyboardShortcutInZbrush()
 {
 	if( $zbrush_window	:= WinExist( "ahk_exe ZBrush.exe" ) )
 	{
@@ -141,4 +142,4 @@ executeCommandInZbrush()
   */
 writeImportScript()
 
-executeCommandInZbrush()
+executeKeyboardShortcutInZbrush()
