@@ -13,7 +13,7 @@ global $ini_file := "install.ini"
 /**
   *
   */
-maxhInstall()
+InstallToMaxAndZbrush()
 {
 	IniRead, $max_path,	%$ini_file%, max, scripts
 
@@ -31,4 +31,4 @@ maxhInstall()
 }
 
 
-maxhInstall()
+InstallToMaxAndZbrush()
