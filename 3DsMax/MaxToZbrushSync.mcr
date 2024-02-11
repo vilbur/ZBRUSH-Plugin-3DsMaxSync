@@ -32,5 +32,5 @@ toolTip:	""
 	(
 		(MaxToZbrushSync_v()).importObjToMax()
 	)
-	
+
 )
