@@ -1,4 +1,3 @@
-filein( getFilenamePath(getSourceFileName()) + "/Lib/MaxToZbrushSync.ms" )
 
 /**
   *
@@ -8,10 +7,13 @@ macroscript	_3DsMaxSync_to_zbrush
 category:	"_3DsMaxSync"
 buttontext:	"Max > ZBrush"
 toolTip:	""
-icon:	"Across:2|width:196|height:48"
+icon:	"Across:2|width:190|height:48"
 --icon:	"Groupbox:Nodes"
 --icon:	"control:checkbutton"
 (
+	--/* IMPORT ZBRUSH PLUGIN */
+	--filein @"C:\GoogleDrive\ProgramsData\CG\ZBrush\Plugins\INSTALLED\MaxZbrushSync\3DsMax\Lib\MaxToZbrushSync.ms" --"./../../../../../../../../../../../../../../../GoogleDrive/ProgramsData/CG/ZBrush/Plugins/INSTALLED/MaxZbrushSync/3DsMax/Lib/MaxToZbrushSync.ms"
+
 	(MaxToZbrushSync_v()).exportObjToZbrush()
 )
 
@@ -26,8 +28,10 @@ toolTip:	""
 --icon:	"Groupbox:Nodes"
 --icon:	"control:checkbutton"
 (
-	clearListener()
-	--messageBox "_3DsMaxSync_to_max" title:"Title"  beep:false
+
+	--/* IMPORT ZBRUSH PLUGIN */
+	--filein @"C:\GoogleDrive\ProgramsData\CG\ZBrush\Plugins\INSTALLED\MaxZbrushSync\3DsMax\Lib\MaxToZbrushSync.ms" --"./../../../../../../../../../../../../../../../GoogleDrive/ProgramsData/CG/ZBrush/Plugins/INSTALLED/MaxZbrushSync/3DsMax/Lib/MaxToZbrushSync.ms"
+
 	undo "Import Zbrush" on
 	(
 		(MaxToZbrushSync_v()).importObjToMax()

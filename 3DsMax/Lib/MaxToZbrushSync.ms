@@ -1,5 +1,16 @@
 /** Max to zbrush sync
   *
+  * HOW TO GET LOCATION OF INI FILES
+  *
+  *
+		CMD:	objImp.getPresetIniName ()
+		RESULT:	"C:\Users\vilbur\AppData\Local\Autodesk\3dsMax\2023 - 64bit\ENU\en-US\plugcfg\gw_objimp.ini"
+
+		CMD:	objImp.getIniName ()
+		RESULT:	"C:\Users\vilbur\AppData\Local\Autodesk\3dsMax\2023 - 64bit\ENU\en-US\plugcfg\gw_objimp_presets.ini"
+
+
+
   *
   * [ObjExp:ExporterPlugin](https://help.autodesk.com/view/3DSMAX/2020/ENU/?guid=GUID-4BAF2F8E-4EAC-4276-A9A7-FF80EE597A45)
  */
@@ -8,7 +19,7 @@ struct MaxToZbrushSync_v
 	/* construct */
 
 	/* properties */
-	export_dir	= "c:/Windows/Temp/_ZBRUSH_MAX_SYNC",
+	export_dir	= "c:/Windows/Temp/_ZBRUSH_MAX_SYNC", -- TODO: PATH SHOULD BE DEFINED IN SOME INI FILE
 
 	current_path = getFilenamePath(getSourceFileName()),
 
@@ -21,7 +32,7 @@ struct MaxToZbrushSync_v
 	imported_objects	= #(),
 
 	/** Max to zbrush
-	 * 
+	 *
 	 * Exported file name is object name with prefixed with postion in selection for keep order of subtools in zbrush
 	 */
 	function exportObjToZbrush =
@@ -31,14 +42,14 @@ struct MaxToZbrushSync_v
 		this._clearExportFolder()
 
 		objects_to_export = for o in selection where superClassOf o == GeometryClass collect o
-		
+
 		for i = 1 to objects_to_export.count do
 			this._exportObject(i)
 
 		select objects_to_export
 
 		DOSCommand ("Start \"\" \""+create_import_script+"\"")
-		
+
 		format "Exported to Zbrush: % \n" (for o in objects_to_export collect o.name)
 	),
 
@@ -49,26 +60,55 @@ struct MaxToZbrushSync_v
 		--format "\n"; print "MaxToZbrushSync_v.importObj()"
 		obj_files	= getFiles (export_dir + "\\*.obj")
 		imported_objects	= #()
-		
+
 		objects_before_import = for o in geometry collect o
 
-		for file in obj_files do 
+		for file in obj_files do
 		(
-		 
 			importFile file #noPrompt using:Importer
-			
-			obj = selection[1]
-			
-			this._flipUV( obj )
 
-			maxOps.CollapseNodeTo obj 1 true
+			imported_polygroups = selection as Array
 
-			this._replaceImportedObjects(objects_before_import)( obj )( getFilenameFile( file ))
+			if imported_polygroups.count > 1 then
+			(
+				this._addMaterialModifier(imported_polygroups)
+
+				for i = imported_polygroups.count to 2 by -1 do
+					polyop.attach imported_polygroups[1] imported_polygroups[i]
+
+				imported_obj = imported_polygroups[1]
+
+				append imported_objects imported_obj
+
+				addModifier imported_obj (Vertex_Weld threshold:0.001)
+
+				--this._flipUV( imported_obj )
+
+				maxOps.CollapseNodeTo imported_obj 1 true
+
+				--( polyop.weldVertsByThreshold imported_obj #{1..( polyop.getNumVerts imported_obj)}) --weld vetices
+
+			)
+			else
+				imported_obj = imported_polygroups[1]
+
+			imported_obj.name = getFilenameFile( file )
+
+			this._replaceImportedObjects(objects_before_import)( imported_obj )( imported_obj.name )
 		)
 
 		select imported_objects
 	),
 
+	/** Add material modifier
+	 */
+	function _addMaterialModifier imported_objects =
+	(
+		--format "\n"; print "MaxToZbrushSync_v._addMaterialModifier()"
+		--for imported_object in imported_objects do
+		for i = 2 to imported_objects.count do
+			addModifier imported_objects[i] (Materialmodifier materialID:i)
+	),
 
 	private
 
@@ -76,45 +116,45 @@ struct MaxToZbrushSync_v
 	 */
 	function _exportObject index =
 	(
-		--format "\n"; print "MaxToZbrushSync_v._exportObjects()"
-		
+		format "\n"; print "MaxToZbrushSync_v._exportObjects()"
+
 		obj = objects_to_export[index]
-		
-		UVWxform = this._flipUV(obj)
-		
+
+		--UVWxform = this._flipUV(obj)
+
 		select obj
 
 		exportFile ( export_dir + "/"+ (this._getCounterPrefix (index)) + "-_-" + obj.name + ".obj" ) #noPrompt selectedOnly:true using:Exporter
 
-		deleteModifier obj UVWxform
+		--deleteModifier obj UVWxform
 	),
-	
+
 	/** Get counter prefix
 	 */
 	function _getCounterPrefix index =
 	(
 		--format "\n"; print "MaxToZbrushSync_v._getCounterPrefix()"
-		
+
 		prefix = ""
-		
+
 		for i = 1 to (objects_to_export.count as string ).count - (index as string ).count do prefix += "0"
-		
+
 		prefix + index as string --return
 	),
-	
-	/** Flip
+
+	/** Flip - DEPRECATED - FLIPPING MAPPING IS PROCESSED IN ZBRUSH ON IMPORT AND EXPORT
 	 */
 	function _flipUV obj =
 	(
 		--format "\n"; print "MaxToZbrushSync_v.flip()"
 		UVWxform = UVW_Xform ()
 		UVWxform.V_Flip = 1
-		
+
 		addModifier obj UVWxform
 
 		UVWxform --return
 	),
-	
+
 	/** Set preset file
 	 */
 	function _setPresetFile preset_file exporter_preset_path =
@@ -131,8 +171,8 @@ struct MaxToZbrushSync_v
 	(
 		--format "\n"; print "MaxToZbrushSync_v._replaceImportedObjects()"
 		--delete_imported = false
-		
-		for obj in objects_before_import where obj.name == imported_object_name do 
+
+		for obj in objects_before_import where obj.name == imported_object_name do
 		(
 			instances = this._getInstances(obj)
 
@@ -140,36 +180,36 @@ struct MaxToZbrushSync_v
 			imported_object.pivot	= obj.pivot
 			imported_object.wirecolor	= obj.wirecolor
 			imported_object.transform	= obj.transform
-			
+
 			ResetXForm	imported_object
 			collapseStack	imported_object
 
 			if instances.count > 1 then
 			(
 				instanceReplace instances imported_object
-				
+
 				delete imported_object
 			)
 			else
 				delete obj
-	
+
 		)
-		
+
 	),
-	
+
 	/** Get instances
-	  * 
+	  *
 	 */
 	function _getInstances obj  =
 	(
 		--format "\n"; print "Selection_v.getInstances()"
 		instances = #()
-		
+
 		InstanceMgr.GetInstances obj &instances
 
 		instances --return
 	),
-	
+
 	/** Relink hierarchy
 	 */
 	function _relinkHierarchy source_object target_object =
@@ -177,7 +217,7 @@ struct MaxToZbrushSync_v
 		--format "\n"; print "GroupCreator_v._relinkHierarchy()"
 		if source_object != undefined then
 			target_object.parent = source_object.parent
-	
+
 		for child in source_object.children do
 			child.parent = target_object
 	),

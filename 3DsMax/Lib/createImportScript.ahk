@@ -32,18 +32,19 @@ writeImportScript()
 
 	$header	:= "[If, 1,`n"
 	$new_document	:= "`n	[IKeyPress, 78,[IPress, Document:New Document]]"
+	$delete_subtools	:= "`n	[IKeyPress,'2',[IPress, Tool:SubTool:Del All]]"
 	$select_subtool_1	:= "`n	[SubToolSelect, 0]"
 	$restore_tools	:= "`n	[IPress, ""Tool:Restore Configuration""]"
 	$enable_perspective	:= "`n	[IPress,Draw:Perspective]"
 	$footer	:= "`n]"
 
 
-	$define_arrays	:= "`n	[VarDef, $set_tool_paths("	$tools_count ") ]"
 	$define_arrays	.= "`n	[VarDef, $tool_names("	$tools_count ") ]"
 	$define_arrays	.= "`n	[VarDef, $subt_names("	$tools_count ") ]`n"
 
 
 	$set_tool_paths := ""
+	$set_tool_paths	:= "`n	[VarDef, $set_tool_paths("	$tools_count ") ]"
 
 	For $index, $file_path in $files_obj
 		$set_tool_paths .= "`n	[VarSet, $set_tool_paths(" $index - 1 "),	""" $file_path """ ]"
@@ -56,6 +57,7 @@ writeImportScript()
 	$import_tools .= "`n		[IPress, Tool:Import]"
 	$import_tools .= "`n		[VarSet, $tool_names(i),	[IGetTitle, Tool:Current Tool, 0]]"
 	$import_tools .= "`n		[VarSet, $subt_names(i),	[IGetTitle, Tool:Current Tool  ]]"
+	$import_tools .= "`n		[IPress,Tool:UV Map:Flip V]"
 	$import_tools .= "`n	, i]"
 
 
@@ -79,9 +81,9 @@ writeImportScript()
 
 		$rename_subtools .= "`n`n	/*    RENAME SUBTOOLS    */"
 		$rename_subtools .= "`n	[Loop, " $tools_count ","
-		$rename_subtools .= "`n		[SubToolSelect, 0]"
-		$rename_subtools .= "`n		[ToolSetPath,, $subt_names(i) ]"
-		$rename_subtools .= "`n		[Loop, [SubToolGetCount] - 1,[IPress,Tool:SubTool:MoveDown] ]"
+		$rename_subtools .= "`n		[SubToolSelect, 0]	// slect first subtool"
+		$rename_subtools .= "`n		[ToolSetPath,, $subt_names(i) ]	// rename subtool"
+		$rename_subtools .= "`n		[IKeyPress,SHIFT,[IPress,Tool:SubTool:MoveDown]]	// send subtool to bottom"
 		$rename_subtools .= "`n	, i]"
 
 
