@@ -1,15 +1,15 @@
 
-[VarDef, $PLUGINS_MENU, 	"~MaxSync"]
-[VarDef, $PLUGIN_SUBMENU,	"MaxZbrushSyncData"]
+[VarDef, PLUGINS_MENU, 	"~MaxSync"]
+[VarDef, PLUGIN_SUBMENU,	"MaxZbrushSyncData"]
 
 
-[VarSet, $LIBRARY_PATH, [FileNameResolvePath,  $PLUGIN_SUBMENU ] ]
+[VarSet, LIBRARY_PATH, [FileNameResolvePath,  PLUGIN_SUBMENU ] ]
 
 
-[VarSet, $CONTROSL_PATH,	[StrMerge, $PLUGINS_MENU, ":"]]
-//[VarSet, $CONTROSL_PATH,	"" ] // DEV
+[VarSet, CONTROSL_PATH,	[StrMerge, PLUGINS_MENU, ":"]]
+//[VarSet, CONTROSL_PATH,	"" ] // DEV
 
-[VarSet, $ZFILE_UTILS_DLL, [StrMerge, $PLUGIN_SUBMENU, "\\ZFileUtils64.dll"] ]
+[VarSet, ZFILE_UTILS_DLL, [StrMerge, PLUGIN_SUBMENU, "\\ZFileUtils64.dll"] ]
 
 <zscriptinsert, "MaxZbrushSyncData/UI.txt">
 

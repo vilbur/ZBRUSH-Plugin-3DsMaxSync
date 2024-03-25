@@ -4,17 +4,17 @@
   */
 [RoutineDef, exportDirCreate
 ,
-	[VarSet, $export_file, [StrMerge, $export_dir, "/", [IGetTitle,Tool:ItemInfo] ] ]
+	[VarSet, export_file, [StrMerge, export_dir, "/", [IGetTitle,Tool:ItemInfo] ] ]
 
-	[VarSet, folder_path, $export_dir]
+	[VarSet, folder_path, export_dir]
 
-	[VarSet,folderExists,[FileExecute,  $ZFILE_UTILS_DLL,"FolderExists",#folder_path]]
+	[VarSet,folderExists,[FileExecute,  ZFILE_UTILS_DLL,"FolderExists",#folder_path]]
 
 	[If,folderExists
 	, // DELETE FILES IN THE FOLDER
-		[VarSet, err, [FileExecute, $ZFILE_UTILS_DLL, "EmptyFolder", #folder_path]]
+		[VarSet, err, [FileExecute, ZFILE_UTILS_DLL, "EmptyFolder", #folder_path]]
 	, // CREATE THE FOLDER
-		[VarSet, err, [FileExecute, $ZFILE_UTILS_DLL, "MakeFolder", #folder_path]]
+		[VarSet, err, [FileExecute, ZFILE_UTILS_DLL, "MakeFolder", #folder_path]]
 	]
 ]
 //[ IButton, "exportDirCreate()" , "", [RoutineCall, exportDirCreate] ]

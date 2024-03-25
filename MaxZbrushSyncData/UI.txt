@@ -1,8 +1,8 @@
 
 
-[IPalette, $PLUGINS_MENU]
+[IPalette, PLUGINS_MENU]
 
-//[ISubPalette, [StrMerge, $PLUGINS_MENU,	":", $PLUGIN_SUBMENU]]
+//[ISubPalette, [StrMerge, PLUGINS_MENU,	":", PLUGIN_SUBMENU]]
 
 
 /** IMPORTANT:
@@ -11,7 +11,7 @@
   * 		Keys are send in method: executeKeyboardShortcutInZbrush() in file: "./../3DsMax/Lib/createImportScript.ahk"
   *
   */
-[IButton, [StrMerge, $PLUGINS_MENU, ":",	"Import Max"], "Import exported obj files to Zbrush"
+[IButton, [StrMerge, PLUGINS_MENU, ":",	"Import Max"], "Import exported obj files to Zbrush"
 
 ,
 	[RoutineCall, importSetup]
@@ -26,7 +26,7 @@
 
 /**
   */
-[ IButton, [StrMerge, $CONTROSL_PATH, "     All > Max"] , "Export All subtools to 3Ds Max"
+[ IButton, [StrMerge, CONTROSL_PATH, "     All > Max"] , "Export All subtools to 3Ds Max"
 ,
 	[RoutineCall, exportDirCreate]
 
@@ -39,7 +39,7 @@
 
 /**
   */
-[ IButton, [StrMerge, $CONTROSL_PATH, "Selected > Max"] , "Export selected subtools to 3Ds Max"
+[ IButton, [StrMerge, CONTROSL_PATH, "Selected > Max"] , "Export selected subtools to 3Ds Max"
 ,
 	[RoutineCall, exportDirCreate]
 
@@ -52,7 +52,7 @@
 
 /**
   */
-[ IButton, [StrMerge, $CONTROSL_PATH, "  Visible > Max"] , "Export visible subtools to 3Ds Max"
+[ IButton, [StrMerge, CONTROSL_PATH, "  Visible > Max"] , "Export visible subtools to 3Ds Max"
 ,
 	[RoutineCall, exportDirCreate]
 
