@@ -1,15 +1,50 @@
+/**
+  *
+  */
+[VarDef, PLUGINNAME, 	"MaxSync"]
+[VarSet, SUBMENUNAME, 	"MaxZbrushSync"]
 
-[VarDef, PLUGINS_MENU, 	"~MaxSync"]
-[VarDef, PLUGIN_SUBMENU,	"MaxZbrushSyncData"]
+
+[VarSet, PLUGINNENU,	[StrMerge, "~", PLUGINNAME ]]
+[VarSet, PLUGINDATA,	[FileNameResolvePath, [StrMerge, SUBMENUNAME, "Data" ]]]
+
+[VarSet, ZFILEUTILSDLL, [StrMerge, PLUGINDATA, "\\ZFileUtils64.dll"] ]
+
+/*------------------------------------------------------------------------------
+
+	PRODUCTION: CONTROLS IN MENU, use this path to place controls in bmenu: PluginMenu > Control
+
+	[VarSet, CONTROLS,	[StrMerge, PLUGINNENU, ":"]]
+
+--------------------------------------------------------------------------------*/
+[VarSet, CONTROLS,	[StrMerge, PLUGINNENU, ":"]]
 
 
-[VarSet, LIBRARY_PATH, [FileNameResolvePath,  PLUGIN_SUBMENU ] ]
+/*------------------------------------------------------------------------------
+
+	PRODUCTION: CONTROLS IN SUBMENU, use this path to place controls in submenu: Menu > Submenu > Control
+
+	[VarSet, CONTROLS,	[StrMerge, PLUGINNENU, ":", SUBMENU, ":"]]
+
+--------------------------------------------------------------------------------*/
 
 
-[VarSet, CONTROSL_PATH,	[StrMerge, PLUGINS_MENU, ":"]]
-//[VarSet, CONTROSL_PATH,	"" ] // DEV
 
-[VarSet, ZFILE_UTILS_DLL, [StrMerge, PLUGIN_SUBMENU, "\\ZFileUtils64.dll"] ]
+/*------------------------------------------------------------------------------
+
+	DEVELOPMENT: use this to show buttons in script pane, allow to be roladed on development
+
+	[VarSet, CONTROLS,	"" ]
+
+--------------------------------------------------------------------------------*/
+
+//[VarSet, CONTROLS,	"" ]
+
+
+[If, [StrLength, CONTROLS ] > 0, // THEN
+	[IPalette,  PLUGINNENU ]]
+
+
 
 <zscriptinsert, "MaxZbrushSyncData/UI.txt">
 
@@ -20,4 +55,3 @@
 <zscriptinsert, "MaxZbrushSyncData/subToolVisibilityTest.txt">
 <zscriptinsert, "MaxZbrushSyncData/exportFromZbrush.txt">
 <zscriptinsert, "MaxZbrushSyncData/exportSubTools.txt">
-

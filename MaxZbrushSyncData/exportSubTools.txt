@@ -11,14 +11,14 @@
 	 
 		[SubToolSelect, i]
 		
-		[If, [Var, only_visible] 
+		[If, [Var, onlyvisible] 
 		, // THEN
 		
-			[VarSet, is_visible, 0]
+			[VarSet, isvisible, 0]
 			
-			[RoutineCall, subToolVisibilityTest, is_visible, i ]
+			[RoutineCall, subToolVisibilityTest, isvisible, i ]
 			
-			[If, [Var, is_visible] 
+			[If, [Var, isvisible] 
 			, // THEN
 				[RoutineCall, exportFromZbrush, [IGetTitle, Tool:SubTool:ItemInfo]]
 			]
@@ -31,5 +31,5 @@
  	[SubToolSelect, current]
 	
 , // PARAMS
-	only_visible
+	onlyvisible
 ]

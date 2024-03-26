@@ -3,7 +3,7 @@
   */
 [RoutineDef, exportFromZbrush
 ,
-	[FileNameSetNext, [StrMerge, export_dir, "/", tool_name, "obj"]]
+	[FileNameSetNext, [StrMerge, exportdir, "/", toolname, "obj"]]
 
 	[IPress,Tool:UV Map:Flip V]
 
@@ -12,5 +12,5 @@
 	[IPress,Tool:UV Map:Flip V]
 
 , // PARAMS
-	tool_name
+	toolname
 ]

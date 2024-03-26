@@ -13,7 +13,7 @@ icon:	"Across:2|width:190|height:48"
 (
 	--/* IMPORT ZBRUSH PLUGIN */
 	--filein @"C:\GoogleDrive\ProgramsData\CG\ZBrush\Plugins\INSTALLED\MaxZbrushSync\3DsMax\Lib\MaxToZbrushSync.ms" --"./../../../../../../../../../../../../../../../GoogleDrive/ProgramsData/CG/ZBrush/Plugins/INSTALLED/MaxZbrushSync/3DsMax/Lib/MaxToZbrushSync.ms"
-
+	--filein @"C:\GoogleDrive\ProgramsData\CG\ZBrush\Plugins\INSTALLED\MaxZbrushSync\3DsMax\MaxToZbrushSync.mcr"
 	(MaxToZbrushSync_v()).exportObjToZbrush()
 )
 
