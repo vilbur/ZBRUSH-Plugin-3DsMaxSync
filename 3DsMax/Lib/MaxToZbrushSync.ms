@@ -1,3 +1,4 @@
+
 /** Max to zbrush sync
   *
   * HOW TO GET LOCATION OF INI FILES
@@ -39,7 +40,10 @@ struct MaxToZbrushSync_v
 	(
 		format "\n"; print "MaxToZbrushSync_v.exportObj()"
 
-		this._clearExportFolder()
+
+		this._createExportDir()
+
+		this._clearExportDir()
 
 		objects_to_export = for o in selection where superClassOf o == GeometryClass collect o
 
@@ -105,7 +109,7 @@ struct MaxToZbrushSync_v
 	function _addMaterialModifier imported_objects =
 	(
 		--format "\n"; print "MaxToZbrushSync_v._addMaterialModifier()"
-		--for imported_object in imported_objects do
+		--for obj_imported in imported_objects do
 		for i = 2 to imported_objects.count do
 			addModifier imported_objects[i] (Materialmodifier materialID:i)
 	),
@@ -157,44 +161,78 @@ struct MaxToZbrushSync_v
 
 	/** Set preset file
 	 */
-	function _setPresetFile preset_file exporter_preset_path =
+	function _setPresetFile =
 	(
 		--format "\n"; print "MaxToZbrushSync_v.setPresetFile()"
-		deleteFile exporter_preset_path
 
-		copyFile preset_file exporter_preset_path
+		my_preset_dir = getFilenamePath(getSourceFileName()) + "Presets"
+
+		for Imp_or_Exp in #( Exporter, Importer) do
+			for target_file in #( Imp_or_Exp.getIniName(), Imp_or_Exp.getPresetIniName() ) do
+				if doesFileExist ( ini_preset_path = my_preset_dir + "\\" + filenameFromPath( target_file ) ) then
+				(
+					deleteFile target_file
+
+					copyFile ini_preset_path target_file
+				)
+				else
+					messageBox ("Missing preset file\n\n`"+ini_preset_path+"\n\nFile is used in ExporterOBJ_v._copyPresetFile()") title:"Missing preset file"  beep:false
 	),
 
 	/** Replace imported objects
 	 */
-	function _replaceImportedObjects objects_before_import imported_object imported_object_name =
+	function _replaceImportedObjects objects_before_import obj_imported imported_object_name =
 	(
 		--format "\n"; print "MaxToZbrushSync_v._replaceImportedObjects()"
-		--delete_imported = false
-
-		for obj in objects_before_import where obj.name == imported_object_name do
+		for obj_source in objects_before_import where obj_source.name == imported_object_name do
 		(
-			instances = this._getInstances(obj)
+			instances = this._getInstances(obj_source)
 
-			imported_object.name	= obj.name
-			imported_object.pivot	= obj.pivot
-			imported_object.wirecolor	= obj.wirecolor
-			imported_object.transform	= obj.transform
+			for inst in instances do
 
-			ResetXForm	imported_object
-			collapseStack	imported_object
+			obj_imported.name	= obj_source.name
+			obj_imported.pivot	= obj_source.pivot
+			obj_imported.wirecolor	= obj_source.wirecolor
+			obj_imported.transform	= obj_source.transform
 
-			if instances.count > 1 then
+			ResetXForm	obj_imported
+			collapseStack	obj_imported
+
+
+			if instances.count == 1 then
 			(
-				instanceReplace instances imported_object
+				this._relinkHierarchy obj_source obj_imported
 
-				delete imported_object
+				delete obj_source
 			)
 			else
-				delete obj
+			(
+				instanceReplace instances obj_imported
 
+				delete obj_imported
+			)
+		)
+	),
+
+	/** Relink hierarchy
+	 */
+	function _relinkHierarchy source_object target_object =
+	(
+		format "\n"; print "GroupCreator_v._relinkHierarchy()"
+		format "source_object: % %\n" source_object (getHandleByAnim source_object)
+		format "target_object: % %\n" target_object (getHandleByAnim target_object)
+		format "target_object.parent: %\n" target_object.parent
+
+		/* RELINK PARENT */
+		if source_object != undefined and source_object.parent != undefined then
+		(
+			print "RELINK"
+			target_object.parent = source_object.parent
 		)
 
+		/* RELINK CHILDREN */
+		for child in source_object.children do
+			child.parent = target_object
 	),
 
 	/** Get instances
@@ -210,22 +248,19 @@ struct MaxToZbrushSync_v
 		instances --return
 	),
 
-	/** Relink hierarchy
-	 */
-	function _relinkHierarchy source_object target_object =
-	(
-		--format "\n"; print "GroupCreator_v._relinkHierarchy()"
-		if source_object != undefined then
-			target_object.parent = source_object.parent
 
-		for child in source_object.children do
-			child.parent = target_object
+	/** Create export dir
+	 */
+	function _createExportDir =
+	(
+		--format "\n"; print "MaxToZbrushSync_v._vreateExportDir()"
+		makeDir export_dir all:true
 	),
 
 	/** Clear export folder
 	  * remove ".obj" and ".mtl" files
 	 */
-	function _clearExportFolder =
+	function _clearExportDir =
 	(
 		for file in getFiles (export_dir + "/*.*") where matchPattern file pattern:"*.obj" or matchPattern file pattern:"*.mtl" do
 			deleteFile file
@@ -236,9 +271,7 @@ struct MaxToZbrushSync_v
 	on create do
 	(
 		--format "\n"; print "MaxToZbrushSync.onCreate()"
-		makeDir export_dir all:true
-		--for prop in #(  ) where getProperty this prop == undefined do -- CHECK CONSTRUCT PROPERTIES -- Array of this struct properties necessary to run
-		--	throw ("\n\n\nUNDEFINED CONSTRUCT PROPERTY\n\n\nSTRUCT:\n\n"+ ((filterString( classof this as string )"(:")[2]) +"\n\n\nPROPERTY:\n\n"+ prop )
-	)
+		this._setPresetFile()
 
+	)
 )
