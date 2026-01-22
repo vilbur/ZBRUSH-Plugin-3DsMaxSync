@@ -22,6 +22,8 @@ struct MaxToZbrushSync_v
 	/* properties */
 	export_dir	= "c:/Windows/Temp/_ZBRUSH_MAX_SYNC", -- TODO: PATH SHOULD BE DEFINED IN SOME INI FILE
 
+	
+	/* private */ 
 	current_path = getFilenamePath(getSourceFileName()),
 
 	create_import_script	= current_path + "/createImportScript.ahk", -- "./createImportScript.ahk"
@@ -31,6 +33,10 @@ struct MaxToZbrushSync_v
 
 	objects_to_export	= #(),
 	imported_objects	= #(),
+
+	export_material,
+	
+	Turn_to_Poly_mod = Turn_to_Poly limitPolySize:on maxPolySize:4,
 
 	/** Max to zbrush
 	 *
@@ -44,6 +50,8 @@ struct MaxToZbrushSync_v
 		this._createExportDir()
 
 		this._clearExportDir()
+		
+		this._createtMultiIdMaterial()
 
 		objects_to_export = for o in selection where superClassOf o == GeometryClass collect o
 
@@ -125,11 +133,23 @@ struct MaxToZbrushSync_v
 		obj = objects_to_export[index]
 
 		--UVWxform = this._flipUV(obj)
+		obj_mat = obj.mat
 
+		obj.mat = export_material
+		format "export:  %\n" export_material
+		format "obj.mat: %\n" obj.mat
 		select obj
 
+		/* AVOID N-GONS - allow only 3|4 verts per face */ 
+		addModifier obj Turn_to_Poly_mod
+		
 		exportFile ( export_dir + "/"+ (this._getCounterPrefix (index)) + "-_-" + obj.name + ".obj" ) #noPrompt selectedOnly:true using:Exporter
 
+		/* DELETE MODIFIER */ 
+		deleteModifier obj Turn_to_Poly_mod
+
+		/* RESTORE MATERIAL */ 
+		obj.mat = obj_mat
 		--deleteModifier obj UVWxform
 	),
 
@@ -266,6 +286,42 @@ struct MaxToZbrushSync_v
 			deleteFile file
 	),
 
+	/** Create multimaterial where each material ID has different color
+	  * @return multimaterial
+	 */
+	function _createtMultiIdMaterial =
+	(
+		--print "Material._createtMultiIdMaterial()"
+		--mat_name = "zbrush-multi-id-material"
+
+		colors	 = 99
+
+		--if( (mat_existing = this.getMat mat_name) != undefined ) then
+			--return mat_existing
+
+		--RGB_darker	= this.getColorsPallete colors minmax:#(130,	170)
+		--RGB_dark	= this.getColorsPallete colors minmax:#(90,	130)
+		--RGB	= this.getColorsPallete colors minmax:#(50,	90)
+		--
+		--join RGB (join RGB_dark RGB_darker)
+
+		export_material	= Multimaterial numsubs:colors name:"zbrush-multi-id-material" -- (getFilenamePath  loadedMat)
+
+		/* SET PROPS FOR EACH SUB MATERIAL */
+		for c = 1 to colors do
+		(
+			std_mat = standardMaterial()
+
+			--std_mat.diffuse = color RGB[c][1] RGB[c][2] RGB[c][3]
+			std_mat.name = ("mat_id_" + c as string )
+	
+			export_material.materialList[c] = std_mat
+			export_material.materialIDList[c] = c
+		)
+
+		export_material --return
+	),
+	
 	/**
 	 */
 	on create do
