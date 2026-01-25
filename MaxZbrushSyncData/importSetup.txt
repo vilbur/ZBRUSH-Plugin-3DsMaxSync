@@ -4,11 +4,20 @@
 [RoutineDef, importSetup
 ,
 	//[IUnPress,Preferences:ImportExport:NormalMapFlipVert]
+	
+
+	
 	[IUnPress,	Preferences:ImportExport:iFlipX]
 	[IPress,	Preferences:ImportExport:iFlipY]
 	[IPress,	Preferences:ImportExport:iFlipZ]
 
 	[IUnPress,	Preferences:ImportExport:iSwitchYZ]
 	[IUnPress,	Preferences:ImportExport:iFlipNormals]
+	
+	//[IPress, Zplugin:UV Master:Use Existing UV Seams ]
+	
+	//[IPress,Tool:UV Map:Flip V]
+	//[IPress,Tool:UV Map:Flip U]
+
 ]
 //[IButton, "importSetup()" , "", [RoutineCall, importSetup] ]

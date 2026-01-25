@@ -5,11 +5,12 @@
 ,
 	[FileNameSetNext, [StrMerge, exportdir, "/", toolname, "obj"]]
 
-	[IPress,Tool:UV Map:Flip V]
+	//[IPress,Tool:UV Map:Flip V]
 
 	[IPress,Tool:Export]
+	
+	//[IPress,Tool:UV Map:Flip V]
 
-	[IPress,Tool:UV Map:Flip V]
 
 , // PARAMS
 	toolname

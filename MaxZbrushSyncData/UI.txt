@@ -26,6 +26,8 @@
   */
 [ IButton, [StrMerge, CONTROLS, "     All > Max"] , "Export All subtools to 3Ds Max"
 ,
+	[RoutineCall, setupExport]
+
 	[RoutineCall, exportDirCreate]
 
 	[RoutineCall, exportSubTools, 0]
@@ -39,6 +41,8 @@
   */
 [ IButton, [StrMerge, CONTROLS, "Selected > Max"] , "Export selected subtools to 3Ds Max"
 ,
+	[RoutineCall, setupExport]
+
 	[RoutineCall, exportDirCreate]
 
 	[RoutineCall, exportFromZbrush, [IGetTitle, Tool:SubTool:ItemInfo]]
@@ -52,6 +56,8 @@
   */
 [ IButton, [StrMerge, CONTROLS, "  Visible > Max"] , "Export visible subtools to 3Ds Max"
 ,
+	[RoutineCall, setupExport]
+
 	[RoutineCall, exportDirCreate]
 
 	[RoutineCall, exportSubTools, 1]

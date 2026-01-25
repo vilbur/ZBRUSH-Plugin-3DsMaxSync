@@ -132,7 +132,7 @@ struct MaxToZbrushSync_v
 
 		obj = objects_to_export[index]
 
-		--UVWxform = this._flipUV(obj)
+		UVWxform = this._flipUV(obj)
 		obj_mat = obj.mat
 
 		obj.mat = export_material
@@ -147,6 +147,7 @@ struct MaxToZbrushSync_v
 
 		/* DELETE MODIFIER */ 
 		deleteModifier obj Turn_to_Poly_mod
+		deleteModifier obj UVWxform
 
 		/* RESTORE MATERIAL */ 
 		obj.mat = obj_mat

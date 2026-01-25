@@ -51,6 +51,7 @@
 <zscriptinsert, "MaxZbrushSyncData/exportDir.txt">
 <zscriptinsert, "MaxZbrushSyncData/runImportToMaxAhk.txt">
 <zscriptinsert, "MaxZbrushSyncData/importSetup.txt">
+<zscriptinsert, "MaxZbrushSyncData/setupExport.txt">
 <zscriptinsert, "MaxZbrushSyncData/exportDirCreate.txt">
 <zscriptinsert, "MaxZbrushSyncData/subToolVisibilityTest.txt">
 <zscriptinsert, "MaxZbrushSyncData/exportFromZbrush.txt">
