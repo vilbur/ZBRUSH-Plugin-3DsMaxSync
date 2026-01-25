@@ -3,17 +3,15 @@
   */
 [RoutineDef, setupExport
 ,
-	//[IUnPress,Preferences:ImportExport:NormalMapFlipVert]
 	[IUnPress,	Preferences:ImportExport:eFlipX]
 	[IPress,	Preferences:ImportExport:eFlipY]
 	[IUnPress,	Preferences:ImportExport:eFlipZ]
-
+	
+	////[IUnPress,Preferences:ImportExport:NormalMapFlipVert]
 	[IUnPress,	Preferences:ImportExport:eSwitchYZ]
 	[IPress,	Preferences:ImportExport:eFlipNormals]
-	[IPress,	Preferences:ImportExport:eFlipMapVert]
+	[IUnPress,	Preferences:ImportExport:eFlipMapVert] // seem not working -- WORKAROUND in "./exportSubTools.txt"
 	
-	//[IPress,Tool:UV Map:Flip V]
-	//[IPress,Tool:UV Map:Flip U]
 
 ]
 //[IButton, "importSetup()" , "", [RoutineCall, importSetup] ]

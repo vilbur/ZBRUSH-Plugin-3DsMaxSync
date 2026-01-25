@@ -4,27 +4,39 @@
 [RoutineDef, exportSubTools
 ,
 	//[Note, "exportSubTools"]
-	
+	[RoutineCall, setupExport]
+
 	[VarSet, current,[SubToolGetActiveIndex]]
 
 	[Loop, [SubToolGetCount],
 	 
 		[SubToolSelect, i]
 		
+		/* FLIP UV on V */ 
+		[IPress,Tool:UV Map:Flip V]
+
+		
 		[If, [Var, onlyvisible] 
-		, // THEN
+		, // THEN EXPORT ONLY VISIBLE
 		
 			[VarSet, isvisible, 0]
 			
 			[RoutineCall, subToolVisibilityTest, isvisible, i ]
 			
-			[If, [Var, isvisible] 
-			, // THEN
+			
+			[If, [Var, isvisible]
+			 
+			, // EXPORT IF SUBTOOL IS  VISIBLR
 				[RoutineCall, exportFromZbrush, [IGetTitle, Tool:SubTool:ItemInfo]]
 			]
-		, // THEN
+			
+		, // THEN EXPORT ALL
 			[RoutineCall, exportFromZbrush, [IGetTitle, Tool:SubTool:ItemInfo]]
 		]
+		
+		/* REBVERT FLIP UV */ 
+		[IPress,Tool:UV Map:Flip V]
+
 
 	, i]
 		
