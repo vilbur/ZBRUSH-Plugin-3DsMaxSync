@@ -3,13 +3,12 @@
   */
 [RoutineDef, setupExport
 ,
-	[IUnPress,	Preferences:ImportExport:eFlipX]
+	//[IUnPress,	Preferences:ImportExport:eFlipX]
 	[IPress,	Preferences:ImportExport:eFlipY]
-	[IUnPress,	Preferences:ImportExport:eFlipZ]
+	[IPress,	Preferences:ImportExport:eFlipZ]
 	
-	////[IUnPress,Preferences:ImportExport:NormalMapFlipVert]
-	[IUnPress,	Preferences:ImportExport:eSwitchYZ]
-	[IPress,	Preferences:ImportExport:eFlipNormals]
+	//[IUnPress,	Preferences:ImportExport:eSwitchYZ]
+	[IUnPress,	Preferences:ImportExport:eFlipNormals]
 	[IUnPress,	Preferences:ImportExport:eFlipMapVert] // seem not working -- WORKAROUND in "./exportSubTools.txt"
 	
 
